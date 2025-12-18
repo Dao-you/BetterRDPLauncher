@@ -1,0 +1,13 @@
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\bin\Debug\remote_window.exe.config
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\bin\Debug\remote_window.exe
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\bin\Debug\remote_window.pdb
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.csproj.AssemblyReference.cache
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.Form1.resources
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.Properties.Resources.resources
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.csproj.GenerateResource.cache
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.csproj.CoreCompileInputs.cache
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.exe
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.pdb
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.exe.config
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.Form2.resources
+C:\Users\ben09\OneDrive\文件\remote_window\remote_window\remote_window\obj\Debug\remote_window.Form3.resources

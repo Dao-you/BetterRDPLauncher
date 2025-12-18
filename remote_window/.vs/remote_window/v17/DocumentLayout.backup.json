@@ -1,0 +1,119 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\form3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|c:\\users\\ben09\\onedrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\form3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form1.cs",
+              "RelativeDocumentMoniker": "remote_window\\Form1.cs",
+              "ToolTip": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form1.cs",
+              "RelativeToolTip": "remote_window\\Form1.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAqwF0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T12:34:22.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Form3.cs",
+              "DocumentMoniker": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form3.cs",
+              "RelativeDocumentMoniker": "remote_window\\Form3.cs",
+              "ToolTip": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form3.cs",
+              "RelativeToolTip": "remote_window\\Form3.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAA4wDMAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T11:03:45.634Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Form3.cs [\u8A2D\u8A08]",
+              "DocumentMoniker": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form3.cs",
+              "RelativeDocumentMoniker": "remote_window\\Form3.cs",
+              "ToolTip": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form3.cs [\u8A2D\u8A08]",
+              "RelativeToolTip": "remote_window\\Form3.cs [\u8A2D\u8A08]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T10:52:00.101Z",
+              "EditorCaption": " [\u8A2D\u8A08]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form2.cs",
+              "DocumentMoniker": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form2.cs",
+              "RelativeDocumentMoniker": "remote_window\\Form2.cs",
+              "ToolTip": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form2.cs*",
+              "RelativeToolTip": "remote_window\\Form2.cs*",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAiwBUAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T10:41:14.095Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form2.cs [\u8A2D\u8A08]",
+              "DocumentMoniker": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form2.cs",
+              "RelativeDocumentMoniker": "remote_window\\Form2.cs",
+              "ToolTip": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form2.cs [\u8A2D\u8A08]*",
+              "RelativeToolTip": "remote_window\\Form2.cs [\u8A2D\u8A08]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T10:38:30.55Z",
+              "EditorCaption": " [\u8A2D\u8A08]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Form1.cs [\u8A2D\u8A08]",
+              "DocumentMoniker": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form1.cs",
+              "RelativeDocumentMoniker": "remote_window\\Form1.cs",
+              "ToolTip": "C:\\Users\\ben09\\OneDrive\\\u6587\u4EF6\\remote_window\\remote_window\\remote_window\\Form1.cs [\u8A2D\u8A08]",
+              "RelativeToolTip": "remote_window\\Form1.cs [\u8A2D\u8A08]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T08:42:22.915Z",
+              "EditorCaption": " [\u8A2D\u8A08]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
