@@ -19,15 +19,13 @@ namespace remote_window
 
         private void chkToggleVisibleRemoteAddress_CheckedChanged(object sender, EventArgs e)
         {
-            // Toggle masking for the remote address textbox (show/hide text like password)
+            // Toggle the visibility of the remote address textbox
             try
             {
                 var chk = sender as CheckBox;
                 if (chk != null && this.textRemoteAddress != null)
                 {
-                    // when checked -> show the address (no mask)
-                    // when unchecked -> mask the address
-                    this.textRemoteAddress.UseSystemPasswordChar = !chk.Checked;
+                    this.textRemoteAddress.Visible = chk.Checked;
                 }
             }
             catch

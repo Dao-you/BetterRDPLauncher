@@ -29,37 +29,37 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("剪貼簿");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("印表機");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("智慧卡或 Windows Hello 企業版");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("WebAuthn(Windows Hello 或安全性金鑰)");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("連接埠");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("位置");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("視訊擷取裝置", new System.Windows.Forms.TreeNode[] {
-            treeNode19});
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("稍後插入的磁碟機");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("磁碟機", new System.Windows.Forms.TreeNode[] {
-            treeNode21});
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("其他支援即插即用 (PnP) 的裝置", new System.Windows.Forms.TreeNode[] {
-            treeNode23});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("剪貼簿");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("印表機");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("智慧卡或 Windows Hello 企業版");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("WebAuthn(Windows Hello 或安全性金鑰)");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("連接埠");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("位置");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("視訊擷取裝置", new System.Windows.Forms.TreeNode[] {
+            treeNode7});
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("稍後插入的磁碟機");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("磁碟機", new System.Windows.Forms.TreeNode[] {
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("其他支援即插即用 (PnP) 的裝置", new System.Windows.Forms.TreeNode[] {
+            treeNode11});
             this.tabAllSettings = new System.Windows.Forms.TabControl();
             this.tabBasic = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.panelColorDepth = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.radColordepth32 = new System.Windows.Forms.RadioButton();
             this.radColordepth16 = new System.Windows.Forms.RadioButton();
             this.label15 = new System.Windows.Forms.Label();
             this.lblNowRes = new System.Windows.Forms.Label();
             this.lblHintChoosingRes = new System.Windows.Forms.Label();
-            this.trackRes = new System.Windows.Forms.TrackBar();
+            this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.chkMultiScreen = new System.Windows.Forms.CheckBox();
             this.chkFullscreen = new System.Windows.Forms.CheckBox();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkVisibleTogglePassword = new System.Windows.Forms.CheckBox();
-            this.chkToggleVisibleRemoteAddress = new System.Windows.Forms.CheckBox();
+            this.chkVisibleToggleAddress = new System.Windows.Forms.CheckBox();
             this.chkIsAdmin = new System.Windows.Forms.CheckBox();
             this.lblPresetName = new System.Windows.Forms.Label();
             this.numRemotePort = new System.Windows.Forms.NumericUpDown();
@@ -73,36 +73,36 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabAudio = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radRecord_norec = new System.Windows.Forms.RadioButton();
-            this.radRecord_local = new System.Windows.Forms.RadioButton();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.radAudio_remote = new System.Windows.Forms.RadioButton();
-            this.radAudio_noplay = new System.Windows.Forms.RadioButton();
-            this.radAudio_local = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.tabResources = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnUpdateDevicelist = new System.Windows.Forms.Button();
-            this.treeDeviceList = new System.Windows.Forms.TreeView();
             this.label13 = new System.Windows.Forms.Label();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.comboKeyset = new System.Windows.Forms.ComboBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.btnConnect = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.listSavedPreset = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnSaveNew = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.treeDeviceList = new System.Windows.Forms.TreeView();
+            this.btnUpdateDevicelist = new System.Windows.Forms.Button();
             this.tabAllSettings.SuspendLayout();
             this.tabBasic.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            this.panelColorDepth.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackRes)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numRemotePort)).BeginInit();
@@ -143,14 +143,15 @@
             this.tabBasic.TabIndex = 0;
             this.tabBasic.Text = "一般";
             this.tabBasic.UseVisualStyleBackColor = true;
+            this.tabBasic.Click += new System.EventHandler(this.tabPage1_Click);
             // 
             // groupBox7
             // 
-            this.groupBox7.Controls.Add(this.panelColorDepth);
+            this.groupBox7.Controls.Add(this.panel1);
             this.groupBox7.Controls.Add(this.label15);
             this.groupBox7.Controls.Add(this.lblNowRes);
             this.groupBox7.Controls.Add(this.lblHintChoosingRes);
-            this.groupBox7.Controls.Add(this.trackRes);
+            this.groupBox7.Controls.Add(this.trackBar2);
             this.groupBox7.Controls.Add(this.chkMultiScreen);
             this.groupBox7.Controls.Add(this.chkFullscreen);
             this.groupBox7.Controls.Add(this.pictureBox7);
@@ -161,14 +162,14 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "顯示設定";
             // 
-            // panelColorDepth
+            // panel1
             // 
-            this.panelColorDepth.Controls.Add(this.radColordepth32);
-            this.panelColorDepth.Controls.Add(this.radColordepth16);
-            this.panelColorDepth.Location = new System.Drawing.Point(165, 128);
-            this.panelColorDepth.Name = "panelColorDepth";
-            this.panelColorDepth.Size = new System.Drawing.Size(342, 43);
-            this.panelColorDepth.TabIndex = 8;
+            this.panel1.Controls.Add(this.radColordepth32);
+            this.panel1.Controls.Add(this.radColordepth16);
+            this.panel1.Location = new System.Drawing.Point(165, 128);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(342, 43);
+            this.panel1.TabIndex = 8;
             // 
             // radColordepth32
             // 
@@ -205,18 +206,16 @@
             // 
             this.lblNowRes.AutoSize = true;
             this.lblNowRes.Font = new System.Drawing.Font("Consolas", 10F);
-            this.lblNowRes.ForeColor = System.Drawing.SystemColors.GrayText;
             this.lblNowRes.Location = new System.Drawing.Point(169, 72);
             this.lblNowRes.Name = "lblNowRes";
             this.lblNowRes.Size = new System.Drawing.Size(80, 17);
             this.lblNowRes.TabIndex = 6;
-            this.lblNowRes.Text = "1920x1080";
+            this.lblNowRes.Text = "1920*1080";
             this.lblNowRes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblHintChoosingRes
             // 
             this.lblHintChoosingRes.AutoSize = true;
-            this.lblHintChoosingRes.ForeColor = System.Drawing.SystemColors.GrayText;
             this.lblHintChoosingRes.Location = new System.Drawing.Point(169, 54);
             this.lblHintChoosingRes.Name = "lblHintChoosingRes";
             this.lblHintChoosingRes.Size = new System.Drawing.Size(78, 18);
@@ -224,17 +223,16 @@
             this.lblHintChoosingRes.Text = "選擇解析度";
             this.lblHintChoosingRes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // trackRes
+            // trackBar2
             // 
-            this.trackRes.Enabled = false;
-            this.trackRes.LargeChange = 1;
-            this.trackRes.Location = new System.Drawing.Point(257, 53);
-            this.trackRes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.trackRes.Maximum = 11;
-            this.trackRes.Name = "trackRes";
-            this.trackRes.Size = new System.Drawing.Size(250, 45);
-            this.trackRes.TabIndex = 4;
-            this.trackRes.Value = 11;
+            this.trackBar2.LargeChange = 1;
+            this.trackBar2.Location = new System.Drawing.Point(257, 53);
+            this.trackBar2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.trackBar2.Maximum = 11;
+            this.trackBar2.Name = "trackBar2";
+            this.trackBar2.Size = new System.Drawing.Size(250, 45);
+            this.trackBar2.TabIndex = 4;
+            this.trackBar2.Value = 11;
             // 
             // chkMultiScreen
             // 
@@ -249,15 +247,12 @@
             // chkFullscreen
             // 
             this.chkFullscreen.AutoSize = true;
-            this.chkFullscreen.Checked = true;
-            this.chkFullscreen.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkFullscreen.Location = new System.Drawing.Point(165, 24);
             this.chkFullscreen.Name = "chkFullscreen";
             this.chkFullscreen.Size = new System.Drawing.Size(97, 22);
             this.chkFullscreen.TabIndex = 2;
             this.chkFullscreen.Text = "使用全螢幕";
             this.chkFullscreen.UseVisualStyleBackColor = true;
-            this.chkFullscreen.CheckedChanged += new System.EventHandler(this.chkFullscreen_CheckedChanged);
             // 
             // pictureBox7
             // 
@@ -273,7 +268,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.chkVisibleTogglePassword);
-            this.groupBox1.Controls.Add(this.chkToggleVisibleRemoteAddress);
+            this.groupBox1.Controls.Add(this.chkVisibleToggleAddress);
             this.groupBox1.Controls.Add(this.chkIsAdmin);
             this.groupBox1.Controls.Add(this.lblPresetName);
             this.groupBox1.Controls.Add(this.numRemotePort);
@@ -293,6 +288,7 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "連線設定";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // chkVisibleTogglePassword
             // 
@@ -302,17 +298,15 @@
             this.chkVisibleTogglePassword.Size = new System.Drawing.Size(15, 14);
             this.chkVisibleTogglePassword.TabIndex = 12;
             this.chkVisibleTogglePassword.UseVisualStyleBackColor = true;
-            this.chkVisibleTogglePassword.CheckedChanged += new System.EventHandler(this.chkVisibleTogglePassword_CheckedChanged);
             // 
-            // chkToggleVisibleRemoteAddress
+            // chkVisibleToggleAddress
             // 
-            this.chkToggleVisibleRemoteAddress.AutoSize = true;
-            this.chkToggleVisibleRemoteAddress.Location = new System.Drawing.Point(513, 46);
-            this.chkToggleVisibleRemoteAddress.Name = "chkToggleVisibleRemoteAddress";
-            this.chkToggleVisibleRemoteAddress.Size = new System.Drawing.Size(15, 14);
-            this.chkToggleVisibleRemoteAddress.TabIndex = 12;
-            this.chkToggleVisibleRemoteAddress.UseVisualStyleBackColor = true;
-            this.chkToggleVisibleRemoteAddress.CheckedChanged += new System.EventHandler(this.chkToggleVisibleRemoteAddress_CheckedChanged);
+            this.chkVisibleToggleAddress.AutoSize = true;
+            this.chkVisibleToggleAddress.Location = new System.Drawing.Point(513, 46);
+            this.chkVisibleToggleAddress.Name = "chkVisibleToggleAddress";
+            this.chkVisibleToggleAddress.Size = new System.Drawing.Size(15, 14);
+            this.chkVisibleToggleAddress.TabIndex = 12;
+            this.chkVisibleToggleAddress.UseVisualStyleBackColor = true;
             // 
             // chkIsAdmin
             // 
@@ -379,7 +373,6 @@
             this.textPassword.Name = "textPassword";
             this.textPassword.Size = new System.Drawing.Size(250, 25);
             this.textPassword.TabIndex = 6;
-            this.textPassword.UseSystemPasswordChar = true;
             // 
             // textRemoteAddress
             // 
@@ -387,7 +380,6 @@
             this.textRemoteAddress.Name = "textRemoteAddress";
             this.textRemoteAddress.Size = new System.Drawing.Size(250, 25);
             this.textRemoteAddress.TabIndex = 4;
-            this.textRemoteAddress.UseSystemPasswordChar = true;
             // 
             // label3
             // 
@@ -426,6 +418,7 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // tabAudio
             // 
@@ -440,8 +433,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.radRecord_norec);
-            this.groupBox2.Controls.Add(this.radRecord_local);
+            this.groupBox2.Controls.Add(this.radioButton5);
+            this.groupBox2.Controls.Add(this.radioButton4);
             this.groupBox2.Controls.Add(this.pictureBox2);
             this.groupBox2.Font = new System.Drawing.Font("微軟正黑體", 10F);
             this.groupBox2.Location = new System.Drawing.Point(2, 188);
@@ -453,36 +446,36 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "遠端音效錄製";
             // 
-            // radRecord_norec
+            // radioButton5
             // 
-            this.radRecord_norec.AutoSize = true;
-            this.radRecord_norec.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.radRecord_norec.Location = new System.Drawing.Point(175, 57);
-            this.radRecord_norec.Margin = new System.Windows.Forms.Padding(2);
-            this.radRecord_norec.Name = "radRecord_norec";
-            this.radRecord_norec.Size = new System.Drawing.Size(68, 22);
-            this.radRecord_norec.TabIndex = 5;
-            this.radRecord_norec.TabStop = true;
-            this.radRecord_norec.Text = "不錄製";
-            this.radRecord_norec.UseVisualStyleBackColor = true;
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.radioButton5.Location = new System.Drawing.Point(175, 57);
+            this.radioButton5.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(68, 22);
+            this.radioButton5.TabIndex = 5;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "不錄製";
+            this.radioButton5.UseVisualStyleBackColor = true;
             // 
-            // radRecord_local
+            // radioButton4
             // 
-            this.radRecord_local.AutoSize = true;
-            this.radRecord_local.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.radRecord_local.Location = new System.Drawing.Point(175, 35);
-            this.radRecord_local.Margin = new System.Windows.Forms.Padding(2);
-            this.radRecord_local.Name = "radRecord_local";
-            this.radRecord_local.Size = new System.Drawing.Size(124, 22);
-            this.radRecord_local.TabIndex = 4;
-            this.radRecord_local.TabStop = true;
-            this.radRecord_local.Text = "從這部電腦錄製";
-            this.radRecord_local.UseVisualStyleBackColor = true;
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.radioButton4.Location = new System.Drawing.Point(175, 35);
+            this.radioButton4.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(124, 22);
+            this.radioButton4.TabIndex = 4;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "從這部電腦錄製";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(4, 22);
+            this.pictureBox2.Location = new System.Drawing.Point(4, 20);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(150, 150);
@@ -492,9 +485,9 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.radAudio_remote);
-            this.groupBox3.Controls.Add(this.radAudio_noplay);
-            this.groupBox3.Controls.Add(this.radAudio_local);
+            this.groupBox3.Controls.Add(this.radioButton3);
+            this.groupBox3.Controls.Add(this.radioButton2);
+            this.groupBox3.Controls.Add(this.radioButton1);
             this.groupBox3.Controls.Add(this.pictureBox3);
             this.groupBox3.Font = new System.Drawing.Font("微軟正黑體", 10F);
             this.groupBox3.Location = new System.Drawing.Point(2, 2);
@@ -506,49 +499,49 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "遠端桌面音效播放";
             // 
-            // radAudio_remote
+            // radioButton3
             // 
-            this.radAudio_remote.AutoSize = true;
-            this.radAudio_remote.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.radAudio_remote.Location = new System.Drawing.Point(175, 77);
-            this.radAudio_remote.Margin = new System.Windows.Forms.Padding(2);
-            this.radAudio_remote.Name = "radAudio_remote";
-            this.radAudio_remote.Size = new System.Drawing.Size(138, 22);
-            this.radAudio_remote.TabIndex = 3;
-            this.radAudio_remote.TabStop = true;
-            this.radAudio_remote.Text = "在遠端電腦上播放";
-            this.radAudio_remote.UseVisualStyleBackColor = true;
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.radioButton3.Location = new System.Drawing.Point(175, 77);
+            this.radioButton3.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(138, 22);
+            this.radioButton3.TabIndex = 3;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "在遠端電腦上播放";
+            this.radioButton3.UseVisualStyleBackColor = true;
             // 
-            // radAudio_noplay
+            // radioButton2
             // 
-            this.radAudio_noplay.AutoSize = true;
-            this.radAudio_noplay.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.radAudio_noplay.Location = new System.Drawing.Point(175, 55);
-            this.radAudio_noplay.Margin = new System.Windows.Forms.Padding(2);
-            this.radAudio_noplay.Name = "radAudio_noplay";
-            this.radAudio_noplay.Size = new System.Drawing.Size(82, 22);
-            this.radAudio_noplay.TabIndex = 2;
-            this.radAudio_noplay.TabStop = true;
-            this.radAudio_noplay.Text = "不要播放";
-            this.radAudio_noplay.UseVisualStyleBackColor = true;
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.radioButton2.Location = new System.Drawing.Point(175, 55);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(82, 22);
+            this.radioButton2.TabIndex = 2;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "不要播放";
+            this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // radAudio_local
+            // radioButton1
             // 
-            this.radAudio_local.AutoSize = true;
-            this.radAudio_local.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.radAudio_local.Location = new System.Drawing.Point(175, 33);
-            this.radAudio_local.Margin = new System.Windows.Forms.Padding(2);
-            this.radAudio_local.Name = "radAudio_local";
-            this.radAudio_local.Size = new System.Drawing.Size(138, 22);
-            this.radAudio_local.TabIndex = 1;
-            this.radAudio_local.TabStop = true;
-            this.radAudio_local.Text = "在這部電腦上播放";
-            this.radAudio_local.UseVisualStyleBackColor = true;
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.radioButton1.Location = new System.Drawing.Point(175, 33);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(138, 22);
+            this.radioButton1.TabIndex = 1;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "在這部電腦上播放";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // pictureBox3
             // 
             this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(4, 22);
+            this.pictureBox3.Location = new System.Drawing.Point(4, 20);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(150, 150);
@@ -583,66 +576,6 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "本機裝置和資源";
             // 
-            // btnUpdateDevicelist
-            // 
-            this.btnUpdateDevicelist.Font = new System.Drawing.Font("微軟正黑體", 9F);
-            this.btnUpdateDevicelist.Location = new System.Drawing.Point(457, 23);
-            this.btnUpdateDevicelist.Name = "btnUpdateDevicelist";
-            this.btnUpdateDevicelist.Size = new System.Drawing.Size(75, 23);
-            this.btnUpdateDevicelist.TabIndex = 6;
-            this.btnUpdateDevicelist.Text = "更新";
-            this.btnUpdateDevicelist.UseVisualStyleBackColor = true;
-            // 
-            // treeDeviceList
-            // 
-            this.treeDeviceList.BackColor = System.Drawing.SystemColors.Menu;
-            this.treeDeviceList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeDeviceList.CheckBoxes = true;
-            this.treeDeviceList.ItemHeight = 24;
-            this.treeDeviceList.Location = new System.Drawing.Point(165, 51);
-            this.treeDeviceList.Margin = new System.Windows.Forms.Padding(2);
-            this.treeDeviceList.Name = "treeDeviceList";
-            treeNode13.Checked = true;
-            treeNode13.Name = "Clipboard";
-            treeNode13.Text = "剪貼簿";
-            treeNode14.Checked = true;
-            treeNode14.Name = "Printer";
-            treeNode14.Text = "印表機";
-            treeNode15.Checked = true;
-            treeNode15.Name = "SmartCard";
-            treeNode15.Text = "智慧卡或 Windows Hello 企業版";
-            treeNode16.Checked = true;
-            treeNode16.Name = "WebAuth";
-            treeNode16.Text = "WebAuthn(Windows Hello 或安全性金鑰)";
-            treeNode17.Name = "Ports";
-            treeNode17.Text = "連接埠";
-            treeNode18.Name = "Location";
-            treeNode18.Text = "位置";
-            treeNode19.Name = "Vid_later";
-            treeNode19.Text = "稍後插入的裝置";
-            treeNode20.Name = "VideoCapture";
-            treeNode20.Text = "視訊擷取裝置";
-            treeNode21.Name = "Drive_later";
-            treeNode21.Text = "稍後插入的磁碟機";
-            treeNode22.Name = "Drive";
-            treeNode22.Text = "磁碟機";
-            treeNode23.Name = "PnP_later";
-            treeNode23.Text = "稍後插入的裝置";
-            treeNode24.Name = "PnP";
-            treeNode24.Text = "其他支援即插即用 (PnP) 的裝置";
-            this.treeDeviceList.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode13,
-            treeNode14,
-            treeNode15,
-            treeNode16,
-            treeNode17,
-            treeNode18,
-            treeNode20,
-            treeNode22,
-            treeNode24});
-            this.treeDeviceList.Size = new System.Drawing.Size(367, 125);
-            this.treeDeviceList.TabIndex = 5;
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -666,7 +599,7 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.label14);
-            this.groupBox5.Controls.Add(this.comboKeyset);
+            this.groupBox5.Controls.Add(this.comboBox3);
             this.groupBox5.Controls.Add(this.label12);
             this.groupBox5.Controls.Add(this.pictureBox5);
             this.groupBox5.Location = new System.Drawing.Point(6, 4);
@@ -677,6 +610,7 @@
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "鍵盤";
+            this.groupBox5.Enter += new System.EventHandler(this.groupBox5_Enter);
             // 
             // label14
             // 
@@ -687,14 +621,14 @@
             this.label14.TabIndex = 4;
             this.label14.Text = "範例：ALT+TAB";
             // 
-            // comboKeyset
+            // comboBox3
             // 
-            this.comboKeyset.FormattingEnabled = true;
-            this.comboKeyset.Location = new System.Drawing.Point(162, 57);
-            this.comboKeyset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.comboKeyset.Name = "comboKeyset";
-            this.comboKeyset.Size = new System.Drawing.Size(278, 25);
-            this.comboKeyset.TabIndex = 3;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(162, 57);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(278, 25);
+            this.comboBox3.TabIndex = 3;
             // 
             // label12
             // 
@@ -716,16 +650,16 @@
             this.pictureBox5.TabIndex = 1;
             this.pictureBox5.TabStop = false;
             // 
-            // btnConnect
+            // button1
             // 
-            this.btnConnect.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.btnConnect.Location = new System.Drawing.Point(606, 438);
-            this.btnConnect.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(120, 30);
-            this.btnConnect.TabIndex = 1;
-            this.btnConnect.Text = "連線";
-            this.btnConnect.UseVisualStyleBackColor = true;
+            this.button1.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.button1.Location = new System.Drawing.Point(606, 438);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 30);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "連線";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // listSavedPreset
             // 
@@ -734,7 +668,6 @@
             this.listSavedPreset.Location = new System.Drawing.Point(12, 39);
             this.listSavedPreset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listSavedPreset.Name = "listSavedPreset";
-            this.listSavedPreset.ScrollAlwaysVisible = true;
             this.listSavedPreset.Size = new System.Drawing.Size(160, 395);
             this.listSavedPreset.TabIndex = 3;
             // 
@@ -747,38 +680,95 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "已儲存的電腦";
             // 
-            // btnSave
+            // button2
             // 
-            this.btnSave.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.btnSave.Location = new System.Drawing.Point(138, 438);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(120, 30);
-            this.btnSave.TabIndex = 1;
-            this.btnSave.Text = "儲存";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.button2.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.button2.Location = new System.Drawing.Point(138, 438);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(120, 30);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "儲存";
+            this.button2.UseVisualStyleBackColor = true;
             // 
-            // btnDelete
+            // button5
             // 
-            this.btnDelete.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.btnDelete.Location = new System.Drawing.Point(12, 438);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(120, 30);
-            this.btnDelete.TabIndex = 1;
-            this.btnDelete.Text = "刪除";
-            this.btnDelete.UseVisualStyleBackColor = true;
+            this.button5.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.button5.Location = new System.Drawing.Point(12, 438);
+            this.button5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(120, 30);
+            this.button5.TabIndex = 1;
+            this.button5.Text = "刪除";
+            this.button5.UseVisualStyleBackColor = true;
             // 
-            // btnSaveNew
+            // button6
             // 
-            this.btnSaveNew.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.btnSaveNew.Location = new System.Drawing.Point(264, 438);
-            this.btnSaveNew.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnSaveNew.Name = "btnSaveNew";
-            this.btnSaveNew.Size = new System.Drawing.Size(120, 30);
-            this.btnSaveNew.TabIndex = 1;
-            this.btnSaveNew.Text = "另存為";
-            this.btnSaveNew.UseVisualStyleBackColor = true;
+            this.button6.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.button6.Location = new System.Drawing.Point(264, 438);
+            this.button6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(120, 30);
+            this.button6.TabIndex = 1;
+            this.button6.Text = "另存為";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // treeDeviceList
+            // 
+            this.treeDeviceList.BackColor = System.Drawing.SystemColors.Menu;
+            this.treeDeviceList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeDeviceList.CheckBoxes = true;
+            this.treeDeviceList.ItemHeight = 24;
+            this.treeDeviceList.Location = new System.Drawing.Point(165, 51);
+            this.treeDeviceList.Margin = new System.Windows.Forms.Padding(2);
+            this.treeDeviceList.Name = "treeDeviceList";
+            treeNode1.Name = "Clipboard";
+            treeNode1.Text = "剪貼簿";
+            treeNode2.Name = "Printer";
+            treeNode2.Text = "印表機";
+            treeNode3.Checked = true;
+            treeNode3.Name = "SmartCard";
+            treeNode3.Text = "智慧卡或 Windows Hello 企業版";
+            treeNode4.Checked = true;
+            treeNode4.Name = "WebAuth";
+            treeNode4.Text = "WebAuthn(Windows Hello 或安全性金鑰)";
+            treeNode5.Name = "Ports";
+            treeNode5.Text = "連接埠";
+            treeNode6.Name = "Location";
+            treeNode6.Text = "位置";
+            treeNode7.Name = "Vid_later";
+            treeNode7.Text = "稍後插入的裝置";
+            treeNode8.Name = "VideoCapture";
+            treeNode8.Text = "視訊擷取裝置";
+            treeNode9.Name = "Drive_later";
+            treeNode9.Text = "稍後插入的磁碟機";
+            treeNode10.Name = "Drive";
+            treeNode10.Text = "磁碟機";
+            treeNode11.Name = "PnP_later";
+            treeNode11.Text = "稍後插入的裝置";
+            treeNode12.Name = "PnP";
+            treeNode12.Text = "其他支援即插即用 (PnP) 的裝置";
+            this.treeDeviceList.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4,
+            treeNode5,
+            treeNode6,
+            treeNode8,
+            treeNode10,
+            treeNode12});
+            this.treeDeviceList.Size = new System.Drawing.Size(367, 125);
+            this.treeDeviceList.TabIndex = 5;
+            // 
+            // btnUpdateDevicelist
+            // 
+            this.btnUpdateDevicelist.Location = new System.Drawing.Point(457, 23);
+            this.btnUpdateDevicelist.Name = "btnUpdateDevicelist";
+            this.btnUpdateDevicelist.Size = new System.Drawing.Size(75, 23);
+            this.btnUpdateDevicelist.TabIndex = 6;
+            this.btnUpdateDevicelist.Text = "更新";
+            this.btnUpdateDevicelist.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -789,21 +779,22 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.listSavedPreset);
             this.Controls.Add(this.tabAllSettings);
-            this.Controls.Add(this.btnDelete);
-            this.Controls.Add(this.btnSaveNew);
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnConnect);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Font = new System.Drawing.Font("微軟正黑體", 10F);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
-            this.Text = "BetterRDPLauncher";
+            this.Text = " 遠端桌面連線";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabAllSettings.ResumeLayout(false);
             this.tabBasic.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            this.panelColorDepth.ResumeLayout(false);
-            this.panelColorDepth.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackRes)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -835,14 +826,14 @@
         private System.Windows.Forms.TabPage tabResources;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.ComboBox comboKeyset;
+        private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.ListBox listSavedPreset;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
@@ -855,31 +846,31 @@
         private System.Windows.Forms.NumericUpDown numRemotePort;
         private System.Windows.Forms.Label lblPresetName;
         private System.Windows.Forms.CheckBox chkIsAdmin;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.CheckBox chkVisibleTogglePassword;
-        private System.Windows.Forms.CheckBox chkToggleVisibleRemoteAddress;
-        private System.Windows.Forms.Button btnSaveNew;
+        private System.Windows.Forms.CheckBox chkVisibleToggleAddress;
+        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.CheckBox chkFullscreen;
-        private System.Windows.Forms.TrackBar trackRes;
+        private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.CheckBox chkMultiScreen;
         private System.Windows.Forms.Label lblNowRes;
         private System.Windows.Forms.Label lblHintChoosingRes;
-        private System.Windows.Forms.Panel panelColorDepth;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton radColordepth32;
         private System.Windows.Forms.RadioButton radColordepth16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TabPage tabAudio;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton radRecord_norec;
-        private System.Windows.Forms.RadioButton radRecord_local;
+        private System.Windows.Forms.RadioButton radioButton5;
+        private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RadioButton radAudio_remote;
-        private System.Windows.Forms.RadioButton radAudio_noplay;
-        private System.Windows.Forms.RadioButton radAudio_local;
+        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TreeView treeDeviceList;
