@@ -22,3 +22,4 @@ C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug
 C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug\remote_window.csproj.CoreCompileInputs.cache
 C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug\remote_window.exe
 C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug\remote_window.pdb
+C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug\remote_window.SaveRdpDialog.resources

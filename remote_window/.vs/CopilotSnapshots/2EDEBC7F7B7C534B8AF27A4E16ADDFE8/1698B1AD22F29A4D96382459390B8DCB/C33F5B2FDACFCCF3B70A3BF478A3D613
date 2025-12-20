@@ -21,43 +21,6 @@ namespace remote_window
             this.listSavedPreset.SelectedIndexChanged += listSavedPreset_SelectedIndexChanged;
         }
 
-        // Move file to recycle bin using SHFileOperation
-        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
-        private struct SHFILEOPSTRUCT
-        {
-            public IntPtr hwnd;
-            public uint wFunc;
-            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPWStr)]
-            public string pFrom;
-            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPWStr)]
-            public string pTo;
-            public ushort fFlags;
-            public int fAnyOperationsAborted;
-            public IntPtr hNameMappings;
-            public IntPtr lpszProgressTitle;
-        }
-
-        [System.Runtime.InteropServices.DllImport("shell32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
-        private static extern int SHFileOperation(ref SHFILEOPSTRUCT lpFileOp);
-
-        private bool MoveToRecycleBin(string path)
-        {
-            try
-            {
-                var fs = new SHFILEOPSTRUCT();
-                fs.wFunc = 3; // FO_DELETE
-                // double-null terminated
-                fs.pFrom = path + "\0\0";
-                fs.fFlags = 0x0001 | 0x0040; // FOF_ALLOWUNDO | FOF_NOCONFIRMATION
-                int result = SHFileOperation(ref fs);
-                return result == 0 && fs.fAnyOperationsAborted == 0;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             // 掃描 ~/RDP/*.rdp 並顯示於 listSavedPreset
@@ -511,6 +474,5 @@ namespace remote_window
             {
                 MessageBox.Show($"刪除失敗: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
     }
 }

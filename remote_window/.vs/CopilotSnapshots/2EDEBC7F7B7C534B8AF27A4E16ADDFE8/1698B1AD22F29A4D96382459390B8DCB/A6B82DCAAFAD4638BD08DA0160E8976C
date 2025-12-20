@@ -511,6 +511,5 @@ namespace remote_window
             {
                 MessageBox.Show($"刪除失敗: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
     }
 }

@@ -235,6 +235,7 @@
             this.trackRes.Size = new System.Drawing.Size(250, 45);
             this.trackRes.TabIndex = 4;
             this.trackRes.Value = 11;
+            this.trackRes.Scroll += new System.EventHandler(this.trackRes_Scroll);
             // 
             // chkMultiScreen
             // 
@@ -757,6 +758,7 @@
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "儲存";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnDelete
             // 
@@ -768,6 +770,7 @@
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "刪除";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnSaveNew
             // 
@@ -779,6 +782,7 @@
             this.btnSaveNew.TabIndex = 1;
             this.btnSaveNew.Text = "另存為";
             this.btnSaveNew.UseVisualStyleBackColor = true;
+            this.btnSaveNew.Click += new System.EventHandler(this.btnSaveNew_Click);
             // 
             // Form1
             // 
