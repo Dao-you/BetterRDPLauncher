@@ -29,21 +29,21 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("剪貼簿");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("印表機");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("智慧卡或 Windows Hello 企業版");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("WebAuthn(Windows Hello 或安全性金鑰)");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("連接埠");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("位置");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("視訊擷取裝置", new System.Windows.Forms.TreeNode[] {
-            treeNode7});
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("稍後插入的磁碟機");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("磁碟機", new System.Windows.Forms.TreeNode[] {
-            treeNode9});
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("其他支援即插即用 (PnP) 的裝置", new System.Windows.Forms.TreeNode[] {
-            treeNode11});
+            System.Windows.Forms.TreeNode treeNode61 = new System.Windows.Forms.TreeNode("剪貼簿");
+            System.Windows.Forms.TreeNode treeNode62 = new System.Windows.Forms.TreeNode("印表機");
+            System.Windows.Forms.TreeNode treeNode63 = new System.Windows.Forms.TreeNode("智慧卡或 Windows Hello 企業版");
+            System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("WebAuthn(Windows Hello 或安全性金鑰)");
+            System.Windows.Forms.TreeNode treeNode65 = new System.Windows.Forms.TreeNode("連接埠");
+            System.Windows.Forms.TreeNode treeNode66 = new System.Windows.Forms.TreeNode("位置");
+            System.Windows.Forms.TreeNode treeNode67 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
+            System.Windows.Forms.TreeNode treeNode68 = new System.Windows.Forms.TreeNode("視訊擷取裝置", new System.Windows.Forms.TreeNode[] {
+            treeNode67});
+            System.Windows.Forms.TreeNode treeNode69 = new System.Windows.Forms.TreeNode("稍後插入的磁碟機");
+            System.Windows.Forms.TreeNode treeNode70 = new System.Windows.Forms.TreeNode("磁碟機", new System.Windows.Forms.TreeNode[] {
+            treeNode69});
+            System.Windows.Forms.TreeNode treeNode71 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
+            System.Windows.Forms.TreeNode treeNode72 = new System.Windows.Forms.TreeNode("其他支援即插即用 (PnP) 的裝置", new System.Windows.Forms.TreeNode[] {
+            treeNode71});
             this.tabAllSettings = new System.Windows.Forms.TabControl();
             this.tabBasic = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -98,6 +98,15 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnSaveNew = new System.Windows.Forms.Button();
+            this.About = new System.Windows.Forms.TabPage();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.tabAllSettings.SuspendLayout();
             this.tabBasic.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -117,6 +126,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            this.About.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabAllSettings
@@ -124,6 +137,7 @@
             this.tabAllSettings.Controls.Add(this.tabBasic);
             this.tabAllSettings.Controls.Add(this.tabAudio);
             this.tabAllSettings.Controls.Add(this.tabResources);
+            this.tabAllSettings.Controls.Add(this.About);
             this.tabAllSettings.Location = new System.Drawing.Point(178, 13);
             this.tabAllSettings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabAllSettings.Name = "tabAllSettings";
@@ -605,44 +619,44 @@
             this.treeDeviceList.Location = new System.Drawing.Point(165, 51);
             this.treeDeviceList.Margin = new System.Windows.Forms.Padding(2);
             this.treeDeviceList.Name = "treeDeviceList";
-            treeNode1.Checked = true;
-            treeNode1.Name = "Clipboard";
-            treeNode1.Text = "剪貼簿";
-            treeNode2.Checked = true;
-            treeNode2.Name = "Printer";
-            treeNode2.Text = "印表機";
-            treeNode3.Checked = true;
-            treeNode3.Name = "SmartCard";
-            treeNode3.Text = "智慧卡或 Windows Hello 企業版";
-            treeNode4.Checked = true;
-            treeNode4.Name = "WebAuth";
-            treeNode4.Text = "WebAuthn(Windows Hello 或安全性金鑰)";
-            treeNode5.Name = "Ports";
-            treeNode5.Text = "連接埠";
-            treeNode6.Name = "Location";
-            treeNode6.Text = "位置";
-            treeNode7.Name = "Vid_later";
-            treeNode7.Text = "稍後插入的裝置";
-            treeNode8.Name = "VideoCapture";
-            treeNode8.Text = "視訊擷取裝置";
-            treeNode9.Name = "Drive_later";
-            treeNode9.Text = "稍後插入的磁碟機";
-            treeNode10.Name = "Drive";
-            treeNode10.Text = "磁碟機";
-            treeNode11.Name = "PnP_later";
-            treeNode11.Text = "稍後插入的裝置";
-            treeNode12.Name = "PnP";
-            treeNode12.Text = "其他支援即插即用 (PnP) 的裝置";
+            treeNode61.Checked = true;
+            treeNode61.Name = "Clipboard";
+            treeNode61.Text = "剪貼簿";
+            treeNode62.Checked = true;
+            treeNode62.Name = "Printer";
+            treeNode62.Text = "印表機";
+            treeNode63.Checked = true;
+            treeNode63.Name = "SmartCard";
+            treeNode63.Text = "智慧卡或 Windows Hello 企業版";
+            treeNode64.Checked = true;
+            treeNode64.Name = "WebAuth";
+            treeNode64.Text = "WebAuthn(Windows Hello 或安全性金鑰)";
+            treeNode65.Name = "Ports";
+            treeNode65.Text = "連接埠";
+            treeNode66.Name = "Location";
+            treeNode66.Text = "位置";
+            treeNode67.Name = "Vid_later";
+            treeNode67.Text = "稍後插入的裝置";
+            treeNode68.Name = "VideoCapture";
+            treeNode68.Text = "視訊擷取裝置";
+            treeNode69.Name = "Drive_later";
+            treeNode69.Text = "稍後插入的磁碟機";
+            treeNode70.Name = "Drive";
+            treeNode70.Text = "磁碟機";
+            treeNode71.Name = "PnP_later";
+            treeNode71.Text = "稍後插入的裝置";
+            treeNode72.Name = "PnP";
+            treeNode72.Text = "其他支援即插即用 (PnP) 的裝置";
             this.treeDeviceList.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4,
-            treeNode5,
-            treeNode6,
-            treeNode8,
-            treeNode10,
-            treeNode12});
+            treeNode61,
+            treeNode62,
+            treeNode63,
+            treeNode64,
+            treeNode65,
+            treeNode66,
+            treeNode68,
+            treeNode70,
+            treeNode72});
             this.treeDeviceList.Size = new System.Drawing.Size(367, 125);
             this.treeDeviceList.TabIndex = 5;
             // 
@@ -791,6 +805,99 @@
             this.btnSaveNew.UseVisualStyleBackColor = true;
             this.btnSaveNew.Click += new System.EventHandler(this.btnSaveNew_Click);
             // 
+            // About
+            // 
+            this.About.Controls.Add(this.groupBox9);
+            this.About.Controls.Add(this.groupBox8);
+            this.About.Controls.Add(this.groupBox4);
+            this.About.Location = new System.Drawing.Point(4, 26);
+            this.About.Name = "About";
+            this.About.Size = new System.Drawing.Size(552, 391);
+            this.About.TabIndex = 4;
+            this.About.Text = "關於";
+            this.About.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Location = new System.Drawing.Point(9, 24);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(64, 64);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox4.TabIndex = 0;
+            this.pictureBox4.TabStop = false;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.linkLabel1);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.label6);
+            this.groupBox4.Controls.Add(this.pictureBox4);
+            this.groupBox4.Location = new System.Drawing.Point(3, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(541, 94);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "版本資訊";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("微軟正黑體", 16F, System.Drawing.FontStyle.Bold);
+            this.label6.Location = new System.Drawing.Point(79, 24);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(222, 28);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "BetterRDPLauncher";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(81, 52);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(34, 18);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "v0.1";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(81, 70);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(160, 18);
+            this.linkLabel1.TabIndex = 2;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "於 Github 查看更多資訊";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.label8);
+            this.groupBox8.Location = new System.Drawing.Point(3, 103);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(149, 285);
+            this.groupBox8.TabIndex = 2;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "貢獻者";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 21);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(106, 144);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "孫培鈞\r\n儲存與連線程式\r\n\r\n張丞亞\r\n123\r\n\r\n黄靖渝\r\n456";
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Location = new System.Drawing.Point(158, 103);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(386, 285);
+            this.groupBox9.TabIndex = 3;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "???????";
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnConnect;
@@ -835,6 +942,12 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            this.About.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -896,6 +1009,15 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TreeView treeDeviceList;
         private System.Windows.Forms.Button btnUpdateDevicelist;
+        private System.Windows.Forms.TabPage About;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox groupBox9;
     }
 }
 

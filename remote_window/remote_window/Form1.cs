@@ -798,5 +798,14 @@ namespace remote_window
                 MessageBox.Show($"無法啟動遠端連線: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/Dao-you/BetterRDPLauncher",
+                UseShellExecute = true
+            });
+        }
     }
 }
