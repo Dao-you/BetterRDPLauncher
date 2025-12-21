@@ -16,28 +16,10 @@ namespace remote_window
     public partial class Form1 : Form
     {
         
+        private readonly RdpFileManager rdpFileManager;
         private string rdpDir;
         private Dictionary<string, string> rdpFileMap = new Dictionary<string, string>();
         private const string DefaultListEntry = "新增的連線...";
-
-        private class RdpSettings
-        {
-            public string RemoteAddress { get; set; } = string.Empty;
-            public string Port { get; set; } = "3389";
-            public string Username { get; set; } = string.Empty;
-            public string Resolution { get; set; } = "1920x1080";
-            public bool Fullscreen { get; set; } = true;
-            public bool MultiScreen { get; set; } = false;
-            public string ColorDepth { get; set; } = "32";
-            public int AudioMode { get; set; } = 0;
-            public int AudioCaptureMode { get; set; } = 1;
-            public bool RedirectClipboard { get; set; } = true;
-            public bool RedirectPrinters { get; set; } = true;
-            public bool RedirectSmartcards { get; set; } = true;
-            public bool RedirectComports { get; set; } = false;
-            public bool RedirectDrives { get; set; } = false;
-            public string Password { get; set; } = string.Empty;
-        }
 
         private string ReadTextFileAuto(string path)
         {
@@ -92,6 +74,7 @@ namespace remote_window
         public Form1()
         {
             InitializeComponent();
+            this.rdpFileManager = new RdpFileManager(BuildPasswordBlob);
             this.Load += Form1_Load;
             this.listSavedPreset.SelectedIndexChanged += listSavedPreset_SelectedIndexChanged;
         }
@@ -244,96 +227,10 @@ namespace remote_window
             return sb.ToString();
         }
 
-        private string BuildRdpFileContent(RdpSettings settings, bool includePassword)
-        {
-            string fullAddress = BuildFullAddress(settings.RemoteAddress, settings.Port);
-            string[] resParts = (settings.Resolution ?? "1920x1080").Split('x');
-            string width = resParts.Length > 0 ? resParts[0] : "1920";
-            string height = resParts.Length > 1 ? resParts[1] : "1080";
-            string newline = "\r\n";
-
-            var lines = new List<string>
-            {
-                $"full address:s:{fullAddress}",
-                $"username:s:{settings.Username}",
-                $"screen mode id:i:{(settings.Fullscreen ? 2 : 1)}",
-                $"use multimon:i:{(settings.MultiScreen ? 1 : 0)}",
-                $"desktopwidth:i:{width}",
-                $"desktopheight:i:{height}",
-                $"session bpp:i:{settings.ColorDepth}",
-                $"smart sizing:i:{(settings.Fullscreen ? 0 : 1)}",
-                $"audiomode:i:{settings.AudioMode}",
-                $"audiocapturemode:i:{settings.AudioCaptureMode}",
-                $"redirectclipboard:i:{(settings.RedirectClipboard ? 1 : 0)}",
-                $"redirectprinters:i:{(settings.RedirectPrinters ? 1 : 0)}",
-                $"redirectcomports:i:{(settings.RedirectComports ? 1 : 0)}",
-                $"redirectsmartcards:i:{(settings.RedirectSmartcards ? 1 : 0)}",
-                settings.RedirectDrives ? "drivestoredirect:s:*" : "redirectdrives:i:0",
-                "autoreconnection enabled:i:1",
-                "displayconnectionbar:i:1",
-                "compression:i:1",
-                "bitmapcachepersistenable:i:1",
-                "authentication level:i:2",
-                "enablecredsspsupport:i:1"
-            };
-
-            if (includePassword && !string.IsNullOrEmpty(settings.Password))
-            {
-                lines.Add($"password 51:b:{BuildPasswordBlob(settings.Password)}");
-            }
-
-            return string.Join(newline, lines) + newline;
-        }
-
         private void SaveRdpFile(string filePath, bool includePassword)
         {
             var settings = CollectRdpSettings();
-            string content = BuildRdpFileContent(settings, includePassword);
-            string dir = System.IO.Path.GetDirectoryName(filePath);
-            if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
-            {
-                System.IO.Directory.CreateDirectory(dir);
-            }
-            System.IO.File.WriteAllText(filePath, content, Encoding.Unicode);
-
-            // Basic validation to ensure RDP file contains required fields
-            if (!ValidateRdpFile(filePath))
-            {
-                throw new InvalidOperationException("產生的 RDP 檔案內容不完整或無法使用。請檢查輸入的主機與設定。");
-            }
-        }
-
-        private bool ValidateRdpFile(string filePath)
-        {
-            try
-            {
-                if (!System.IO.File.Exists(filePath)) return false;
-                var lines = System.IO.File.ReadAllLines(filePath, Encoding.Unicode);
-                string addressLine = null;
-                string userLine = null;
-                foreach (var line in lines)
-                {
-                    if (line.StartsWith("full address:s:", StringComparison.OrdinalIgnoreCase)) addressLine = line.Substring("full address:s:".Length);
-                    if (line.StartsWith("username:s:", StringComparison.OrdinalIgnoreCase)) userLine = line.Substring("username:s:".Length);
-                }
-                if (string.IsNullOrWhiteSpace(addressLine)) return false;
-                if (string.IsNullOrWhiteSpace(userLine)) return false;
-                // Verify address can be parsed by BuildFullAddress (will throw if invalid)
-                try
-                {
-                    // If addressLine already contains port or IPv6, BuildFullAddress will accept it
-                    BuildFullAddress(addressLine, this.numRemotePort?.Value.ToString() ?? "3389");
-                }
-                catch
-                {
-                    return false;
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            rdpFileManager.SaveRdpFile(filePath, settings, includePassword);
         }
 
         private string DecodePasswordFromBlob(string hexBlob)
@@ -391,29 +288,6 @@ namespace remote_window
             {
                 return string.Empty;
             }
-        }
-
-        private string BuildFullAddress(string remoteAddress, string port)
-        {
-            string address = (remoteAddress ?? string.Empty).Trim();
-            string portText = (port ?? "3389").Trim();
-            if (string.IsNullOrEmpty(address))
-            {
-                throw new InvalidOperationException("請輸入遠端主機位址。");
-            }
-
-            if (address.Contains(":"))
-            {
-                // Already has a port or IPv6 notation; do not append duplicate port
-                return address;
-            }
-
-            if (string.IsNullOrEmpty(portText))
-            {
-                return address;
-            }
-
-            return $"{address}:{portText}";
         }
 
         private void Form1_Load(object sender, EventArgs e)
