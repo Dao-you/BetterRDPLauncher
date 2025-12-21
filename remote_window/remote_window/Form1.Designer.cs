@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("剪貼簿");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("印表機");
@@ -92,12 +93,23 @@
             this.comboKeyset = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.About = new System.Windows.Forms.TabPage();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.AAAApple = new System.Windows.Forms.RichTextBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.listSavedPreset = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnSaveNew = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabAllSettings.SuspendLayout();
             this.tabBasic.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -117,6 +129,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            this.About.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.SuspendLayout();
             // 
             // tabAllSettings
@@ -124,12 +141,14 @@
             this.tabAllSettings.Controls.Add(this.tabBasic);
             this.tabAllSettings.Controls.Add(this.tabAudio);
             this.tabAllSettings.Controls.Add(this.tabResources);
+            this.tabAllSettings.Controls.Add(this.About);
             this.tabAllSettings.Location = new System.Drawing.Point(178, 13);
             this.tabAllSettings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabAllSettings.Name = "tabAllSettings";
             this.tabAllSettings.SelectedIndex = 0;
             this.tabAllSettings.Size = new System.Drawing.Size(560, 421);
             this.tabAllSettings.TabIndex = 2;
+            this.tabAllSettings.SelectedIndexChanged += new System.EventHandler(this.tabAllSettings_SelectedIndexChanged);
             // 
             // tabBasic
             // 
@@ -719,6 +738,110 @@
             this.pictureBox5.TabIndex = 1;
             this.pictureBox5.TabStop = false;
             // 
+            // About
+            // 
+            this.About.Controls.Add(this.groupBox9);
+            this.About.Controls.Add(this.groupBox8);
+            this.About.Controls.Add(this.groupBox4);
+            this.About.Location = new System.Drawing.Point(4, 26);
+            this.About.Name = "About";
+            this.About.Size = new System.Drawing.Size(552, 391);
+            this.About.TabIndex = 4;
+            this.About.Text = "關於";
+            this.About.UseVisualStyleBackColor = true;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.AAAApple);
+            this.groupBox9.Location = new System.Drawing.Point(158, 103);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(386, 285);
+            this.groupBox9.TabIndex = 3;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "???????";
+            // 
+            // AAAApple
+            // 
+            this.AAAApple.Font = new System.Drawing.Font("Consolas", 5F);
+            this.AAAApple.Location = new System.Drawing.Point(35, 24);
+            this.AAAApple.Name = "AAAApple";
+            this.AAAApple.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.AAAApple.Size = new System.Drawing.Size(322, 255);
+            this.AAAApple.TabIndex = 0;
+            this.AAAApple.Text = resources.GetString("AAAApple.Text");
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.label8);
+            this.groupBox8.Location = new System.Drawing.Point(3, 103);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(149, 285);
+            this.groupBox8.TabIndex = 2;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "貢獻者";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 21);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(106, 144);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "孫培鈞\r\n儲存與連線程式\r\n\r\n張丞亞\r\n123\r\n\r\n黄靖渝\r\n456";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.linkLabel1);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.label6);
+            this.groupBox4.Controls.Add(this.pictureBox4);
+            this.groupBox4.Location = new System.Drawing.Point(3, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(541, 94);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "版本資訊";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(81, 70);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(160, 18);
+            this.linkLabel1.TabIndex = 2;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "於 Github 查看更多資訊";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(81, 52);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(34, 18);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "v0.1";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("微軟正黑體", 16F, System.Drawing.FontStyle.Bold);
+            this.label6.Location = new System.Drawing.Point(79, 24);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(222, 28);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "BetterRDPLauncher";
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Location = new System.Drawing.Point(9, 24);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(64, 64);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox4.TabIndex = 0;
+            this.pictureBox4.TabStop = false;
+            // 
             // btnConnect
             // 
             this.btnConnect.Font = new System.Drawing.Font("微軟正黑體", 10F);
@@ -791,6 +914,11 @@
             this.btnSaveNew.UseVisualStyleBackColor = true;
             this.btnSaveNew.Click += new System.EventHandler(this.btnSaveNew_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 30;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnConnect;
@@ -835,6 +963,13 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            this.About.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -845,6 +980,7 @@
         private System.Windows.Forms.TabControl tabAllSettings;
         private System.Windows.Forms.TabPage tabBasic;
         private System.Windows.Forms.TabPage tabResources;
+        // tabAbout removed - using existing About tab and controls
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnConnect;
@@ -896,6 +1032,18 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TreeView treeDeviceList;
         private System.Windows.Forms.Button btnUpdateDevicelist;
+        private System.Windows.Forms.TabPage About;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.RichTextBox AAAApple;
+        private System.Windows.Forms.Timer timer1;
+        // AAAApple and timer1 already declared earlier in designer generated region
     }
 }
 
