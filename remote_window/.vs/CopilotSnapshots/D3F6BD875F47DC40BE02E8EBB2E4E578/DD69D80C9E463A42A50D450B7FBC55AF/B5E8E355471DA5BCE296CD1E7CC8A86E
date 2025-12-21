@@ -117,9 +117,14 @@ namespace remote_window
 
         private string BuildPasswordBlob(string password)
         {
-            // For compatibility avoid DPAPI here and store as base64 of unicode bytes
-            if (string.IsNullOrEmpty(password)) return string.Empty;
-            return Convert.ToBase64String(Encoding.Unicode.GetBytes(password));
+            var data = Encoding.Unicode.GetBytes(password);
+            var encrypted = System.Security.Cryptography.ProtectedData.Protect(data, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
+            var sb = new StringBuilder(encrypted.Length * 2);
+            foreach (byte b in encrypted)
+            {
+                sb.Append(b.ToString("X2"));
+            }
+            return sb.ToString();
         }
 
         private string BuildRdpFileContent(RdpSettings settings, bool includePassword)
@@ -218,36 +223,15 @@ namespace remote_window
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(hexBlob)) return string.Empty;
-                // Try base64 first
-                try
+                if (string.IsNullOrWhiteSpace(hexBlob) || hexBlob.Length % 2 != 0) return string.Empty;
+                int len = hexBlob.Length / 2;
+                byte[] data = new byte[len];
+                for (int i = 0; i < len; i++)
                 {
-                    var bytes = Convert.FromBase64String(hexBlob);
-                    return Encoding.Unicode.GetString(bytes);
+                    data[i] = Convert.ToByte(hexBlob.Substring(i * 2, 2), 16);
                 }
-                catch { }
-
-                // Fallback: if hex string, decode bytes and interpret as Unicode
-                if (hexBlob.Length % 2 == 0)
-                {
-                    bool isHex = true;
-                    for (int i = 0; i < hexBlob.Length; i++)
-                    {
-                        char c = hexBlob[i];
-                        if (!Uri.IsHexDigit(c)) { isHex = false; break; }
-                    }
-                    if (isHex)
-                    {
-                        int len = hexBlob.Length / 2;
-                        byte[] data = new byte[len];
-                        for (int i = 0; i < len; i++)
-                        {
-                            data[i] = Convert.ToByte(hexBlob.Substring(i * 2, 2), 16);
-                        }
-                        return Encoding.Unicode.GetString(data);
-                    }
-                }
-                return string.Empty;
+                var decrypted = System.Security.Cryptography.ProtectedData.Unprotect(data, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
+                return Encoding.Unicode.GetString(decrypted);
             }
             catch
             {

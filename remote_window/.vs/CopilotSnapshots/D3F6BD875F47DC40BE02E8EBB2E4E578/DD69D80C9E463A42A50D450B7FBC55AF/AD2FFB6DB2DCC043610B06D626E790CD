@@ -117,9 +117,14 @@ namespace remote_window
 
         private string BuildPasswordBlob(string password)
         {
-            // For compatibility avoid DPAPI here and store as base64 of unicode bytes
-            if (string.IsNullOrEmpty(password)) return string.Empty;
-            return Convert.ToBase64String(Encoding.Unicode.GetBytes(password));
+            var data = Encoding.Unicode.GetBytes(password);
+            var encrypted = ProtectedData.Protect(data, null, DataProtectionScope.CurrentUser);
+            var sb = new StringBuilder(encrypted.Length * 2);
+            foreach (byte b in encrypted)
+            {
+                sb.Append(b.ToString("X2"));
+            }
+            return sb.ToString();
         }
 
         private string BuildRdpFileContent(RdpSettings settings, bool includePassword)
@@ -167,87 +172,27 @@ namespace remote_window
         {
             var settings = CollectRdpSettings();
             string content = BuildRdpFileContent(settings, includePassword);
-            string dir = System.IO.Path.GetDirectoryName(filePath);
+            string? dir = System.IO.Path.GetDirectoryName(filePath);
             if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
             {
                 System.IO.Directory.CreateDirectory(dir);
             }
             System.IO.File.WriteAllText(filePath, content, Encoding.Unicode);
-
-            // Basic validation to ensure RDP file contains required fields
-            if (!ValidateRdpFile(filePath))
-            {
-                throw new InvalidOperationException("產生的 RDP 檔案內容不完整或無法使用。請檢查輸入的主機與設定。");
-            }
-        }
-
-        private bool ValidateRdpFile(string filePath)
-        {
-            try
-            {
-                if (!System.IO.File.Exists(filePath)) return false;
-                var lines = System.IO.File.ReadAllLines(filePath, Encoding.Unicode);
-                string addressLine = null;
-                string userLine = null;
-                foreach (var line in lines)
-                {
-                    if (line.StartsWith("full address:s:", StringComparison.OrdinalIgnoreCase)) addressLine = line.Substring("full address:s:".Length);
-                    if (line.StartsWith("username:s:", StringComparison.OrdinalIgnoreCase)) userLine = line.Substring("username:s:".Length);
-                }
-                if (string.IsNullOrWhiteSpace(addressLine)) return false;
-                if (string.IsNullOrWhiteSpace(userLine)) return false;
-                // Verify address can be parsed by BuildFullAddress (will throw if invalid)
-                try
-                {
-                    // If addressLine already contains port or IPv6, BuildFullAddress will accept it
-                    BuildFullAddress(addressLine, this.numRemotePort?.Value.ToString() ?? "3389");
-                }
-                catch
-                {
-                    return false;
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         private string DecodePasswordFromBlob(string hexBlob)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(hexBlob)) return string.Empty;
-                // Try base64 first
-                try
+                if (string.IsNullOrWhiteSpace(hexBlob) || hexBlob.Length % 2 != 0) return string.Empty;
+                int len = hexBlob.Length / 2;
+                byte[] data = new byte[len];
+                for (int i = 0; i < len; i++)
                 {
-                    var bytes = Convert.FromBase64String(hexBlob);
-                    return Encoding.Unicode.GetString(bytes);
+                    data[i] = Convert.ToByte(hexBlob.Substring(i * 2, 2), 16);
                 }
-                catch { }
-
-                // Fallback: if hex string, decode bytes and interpret as Unicode
-                if (hexBlob.Length % 2 == 0)
-                {
-                    bool isHex = true;
-                    for (int i = 0; i < hexBlob.Length; i++)
-                    {
-                        char c = hexBlob[i];
-                        if (!Uri.IsHexDigit(c)) { isHex = false; break; }
-                    }
-                    if (isHex)
-                    {
-                        int len = hexBlob.Length / 2;
-                        byte[] data = new byte[len];
-                        for (int i = 0; i < len; i++)
-                        {
-                            data[i] = Convert.ToByte(hexBlob.Substring(i * 2, 2), 16);
-                        }
-                        return Encoding.Unicode.GetString(data);
-                    }
-                }
-                return string.Empty;
+                var decrypted = ProtectedData.Unprotect(data, null, DataProtectionScope.CurrentUser);
+                return Encoding.Unicode.GetString(decrypted);
             }
             catch
             {
