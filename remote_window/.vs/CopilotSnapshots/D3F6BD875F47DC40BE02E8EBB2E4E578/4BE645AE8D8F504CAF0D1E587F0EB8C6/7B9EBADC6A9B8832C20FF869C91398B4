@@ -80,13 +80,6 @@ namespace remote_window
             // select default
             listSavedPreset.SelectedIndex = 0;
             }
-
-            // Ensure connect button gets initial focus so Enter activates it
-            try
-            {
-                this.btnConnect?.Focus();
-            }
-            catch { }
         }
 
         private void listSavedPreset_SelectedIndexChanged(object sender, EventArgs e)
