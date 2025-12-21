@@ -25,6 +25,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|c:\\users\\qaz93\\documents\\betterrdplauncher\\remote_window\\remote_window\\form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form1.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,8 +38,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Form1.resx",
+              "DocumentMoniker": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.resx",
+              "RelativeDocumentMoniker": "remote_window\\Form1.resx",
+              "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.resx",
+              "RelativeToolTip": "remote_window\\Form1.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-12-21T21:16:09.371Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 5,
@@ -44,9 +60,10 @@
               "RelativeDocumentMoniker": "remote_window\\Program.cs",
               "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Program.cs",
               "RelativeToolTip": "remote_window\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAALAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-20T13:14:13.237Z"
+              "WhenOpened": "2025-12-20T13:14:13.237Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -56,7 +73,7 @@
               "RelativeDocumentMoniker": "remote_window\\Form1.Designer.cs",
               "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.Designer.cs",
               "RelativeToolTip": "remote_window\\Form1.Designer.cs",
-              "ViewState": "AgIAAPcDAAAAAAAAAAAhwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-20T16:10:59.515Z",
               "EditorCaption": ""
@@ -94,7 +111,7 @@
               "RelativeDocumentMoniker": "remote_window\\Form1.cs",
               "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.cs",
               "RelativeToolTip": "remote_window\\Form1.cs",
-              "ViewState": "AgIAAOYBAAAAAAAAAADgvwQCAAAuAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAADgv2UCAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-20T13:24:15.579Z",
               "EditorCaption": ""

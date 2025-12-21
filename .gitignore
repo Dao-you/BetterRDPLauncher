@@ -1,0 +1,121 @@
+##############################
+# Visual Studio
+##############################
+
+.vs/
+remote_window/.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+##############################
+# Build Results
+##############################
+
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+##############################
+# Visual Studio cache / temp
+##############################
+
+*.cache
+*.ilk
+*.log
+*.tlog
+*.tmp
+*.tmp_proj
+*.vspscc
+*.vssscc
+*.pidb
+*.pdb
+*.ipch
+*.iobj
+*.pch
+
+##############################
+# .NET
+##############################
+
+*.dll
+*.exe
+*.app
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+*.deps.json
+*.runtimeconfig.json
+
+##############################
+# NuGet
+##############################
+
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+##############################
+# Publish / ClickOnce
+##############################
+
+publish/
+PublishProfiles/
+*.Publish.xml
+*.pubxml
+*.publishproj
+
+##############################
+# Rider / ReSharper
+##############################
+
+.idea/
+_ReSharper*/
+*.DotSettings.user
+
+##############################
+# Test results
+##############################
+
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+##############################
+# Windows / OS
+##############################
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+##############################
+# Logs
+##############################
+
+*.log
+
+##############################
+# Others
+##############################
+
+*.bak
+*.old
+*.orig
+*.swp
+*.swo

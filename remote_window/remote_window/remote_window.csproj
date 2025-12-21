@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RdpFileManager.cs" />
     <Compile Include="SaveRdpDialog.cs">
       <SubType>Form</SubType>
     </Compile>
