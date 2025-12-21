@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -177,6 +179,108 @@ namespace remote_window
             }
             catch { }
             // enable save/delete for actual presets
+            this.btnSave.Enabled = true;
+            this.btnDelete.Enabled = true;
+        }
+
+        private string EnsureRdpDirectory()
+        {
+            if (string.IsNullOrEmpty(rdpDir))
+            {
+                rdpDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "RDP");
+            }
+
+            if (!Directory.Exists(rdpDir))
+            {
+                Directory.CreateDirectory(rdpDir);
+            }
+
+            return rdpDir;
+        }
+
+        private string BuildRdpContent(bool includePassword)
+        {
+            string remoteAddress = this.textRemoteAddress?.Text ?? "";
+            string port = this.numRemotePort?.Value.ToString() ?? "3389";
+            string username = this.comboUserAccount?.Text ?? "";
+            string resolution = this.lblNowRes?.Text ?? "1920x1080";
+            bool fullscreen = this.chkFullscreen?.Checked ?? true;
+            bool multiScreen = this.chkMultiScreen?.Checked ?? false;
+            string colorDepth = (this.radColordepth32 != null && this.radColordepth32.Checked) ? "32" : "16";
+
+            int audiomode = 0; // 0: 本機, 1: 遠端, 2: 不播放
+            if (this.radAudio_remote != null && this.radAudio_remote.Checked)
+                audiomode = 1;
+            else if (this.radAudio_noplay != null && this.radAudio_noplay.Checked)
+                audiomode = 2;
+
+            int audiocapturemode = 0; // 1: 啟用錄音, 0: 不錄音
+            if (this.radRecord_local != null && this.radRecord_local.Checked)
+                audiocapturemode = 1;
+
+            int redirectclipboard = 0, redirectprinters = 0, redirectsmartcards = 0, redirectcomports = 0, redirectdrives = 0;
+            if (this.treeDeviceList != null)
+            {
+                foreach (TreeNode node in this.treeDeviceList.Nodes)
+                {
+                    if (node.Name == "Clipboard") redirectclipboard = node.Checked ? 1 : 0;
+                    if (node.Name == "Printer") redirectprinters = node.Checked ? 1 : 0;
+                    if (node.Name == "SmartCard") redirectsmartcards = node.Checked ? 1 : 0;
+                    if (node.Name == "Ports") redirectcomports = node.Checked ? 1 : 0;
+                    if (node.Name == "Drive") redirectdrives = node.Checked ? 1 : 0;
+                }
+            }
+
+            string[] resParts = resolution.Split('x');
+            string width = resParts.Length > 0 ? resParts[0] : "1920";
+            string height = resParts.Length > 1 ? resParts[1] : "1080";
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"full address:s:{remoteAddress}:{port}");
+            sb.AppendLine($"username:s:{username}");
+            sb.AppendLine($"screen mode id:i:{(fullscreen ? 2 : 1)}");
+            sb.AppendLine($"use multimon:i:{(multiScreen ? 1 : 0)}");
+            sb.AppendLine($"desktopwidth:i:{width}");
+            sb.AppendLine($"desktopheight:i:{height}");
+            sb.AppendLine($"session bpp:i:{colorDepth}");
+            sb.AppendLine($"audiomode:i:{audiomode}");
+            sb.AppendLine($"audiocapturemode:i:{audiocapturemode}");
+            sb.AppendLine($"redirectclipboard:i:{redirectclipboard}");
+            sb.AppendLine($"redirectprinters:i:{redirectprinters}");
+            sb.AppendLine($"redirectcomports:i:{redirectcomports}");
+            sb.AppendLine($"redirectsmartcards:i:{redirectsmartcards}");
+            sb.AppendLine($"redirectdrives:i:{redirectdrives}");
+
+            if (includePassword && !string.IsNullOrEmpty(this.textPassword?.Text))
+            {
+                sb.AppendLine($"password 51:b:{Convert.ToBase64String(System.Text.Encoding.Unicode.GetBytes(this.textPassword.Text))}");
+            }
+
+            return sb.ToString();
+        }
+
+        private void SaveRdpFile(string filePath, bool includePassword)
+        {
+            string dir = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            string content = BuildRdpContent(includePassword);
+            File.WriteAllText(filePath, content, System.Text.Encoding.Unicode);
+        }
+
+        private void AddOrUpdatePresetList(string name, string filePath)
+        {
+            if (!listSavedPreset.Items.Contains(name))
+            {
+                listSavedPreset.Items.Add(name);
+            }
+
+            rdpFileMap[name] = filePath;
+            listSavedPreset.SelectedItem = name;
+            lblPresetName.Text = name;
             this.btnSave.Enabled = true;
             this.btnDelete.Enabled = true;
         }
@@ -363,84 +467,11 @@ namespace remote_window
                         inputName = inputName.Replace(c.ToString(), "_");
                     string fileName = inputName + ".rdp";
                     bool savePassword = dlg.SavePassword;
+                    string rdpDirPath = EnsureRdpDirectory();
+                    string filePath = System.IO.Path.Combine(rdpDirPath, fileName);
 
-                    // Prepare RDP settings
-                    string remoteAddress = this.textRemoteAddress?.Text ?? "";
-                    string port = this.numRemotePort?.Value.ToString() ?? "3389";
-                    string username = this.comboUserAccount?.Text ?? "";
-                    string resolution = this.lblNowRes?.Text ?? "1920x1080";
-                    bool fullscreen = this.chkFullscreen?.Checked ?? true;
-                    bool multiScreen = this.chkMultiScreen?.Checked ?? false;
-                    string colorDepth = (this.radColordepth32 != null && this.radColordepth32.Checked) ? "32" : "16";
-
-                    // 音效設定
-                    int audiomode = 0; // 0: 本機, 1: 遠端, 2: 不播放
-                    if (this.radAudio_remote != null && this.radAudio_remote.Checked)
-                        audiomode = 1;
-                    else if (this.radAudio_noplay != null && this.radAudio_noplay.Checked)
-                        audiomode = 2;
-
-                    int audiocapturemode = 0; // 1: 啟用錄音, 0: 不錄音
-                    if (this.radRecord_local != null && this.radRecord_local.Checked)
-                        audiocapturemode = 1;
-
-                    // 資源設定
-                    int redirectclipboard = 0, redirectprinters = 0, redirectsmartcards = 0, redirectcomports = 0, redirectdrives = 0;
-                    if (this.treeDeviceList != null)
-                    {
-                        foreach (TreeNode node in this.treeDeviceList.Nodes)
-                        {
-                            if (node.Name == "Clipboard") redirectclipboard = node.Checked ? 1 : 0;
-                            if (node.Name == "Printer") redirectprinters = node.Checked ? 1 : 0;
-                            if (node.Name == "SmartCard") redirectsmartcards = node.Checked ? 1 : 0;
-                            if (node.Name == "Ports") redirectcomports = node.Checked ? 1 : 0;
-                            if (node.Name == "Drive") redirectdrives = node.Checked ? 1 : 0;
-                        }
-                    }
-
-                    // Parse resolution
-                    string[] resParts = resolution.Split('x');
-                    string width = resParts.Length > 0 ? resParts[0] : "1920";
-                    string height = resParts.Length > 1 ? resParts[1] : "1080";
-
-                    // Build RDP file content
-                    var sb = new System.Text.StringBuilder();
-                    sb.AppendLine($"full address:s:{remoteAddress}:{port}");
-                    sb.AppendLine($"username:s:{username}");
-                    sb.AppendLine($"screen mode id:i:{(fullscreen ? 2 : 1)}");
-                    sb.AppendLine($"use multimon:i:{(multiScreen ? 1 : 0)}");
-                    sb.AppendLine($"desktopwidth:i:{width}");
-                    sb.AppendLine($"desktopheight:i:{height}");
-                    sb.AppendLine($"session bpp:i:{colorDepth}");
-                    // 音效
-                    sb.AppendLine($"audiomode:i:{audiomode}");
-                    sb.AppendLine($"audiocapturemode:i:{audiocapturemode}");
-                    // 資源
-                    sb.AppendLine($"redirectclipboard:i:{redirectclipboard}");
-                    sb.AppendLine($"redirectprinters:i:{redirectprinters}");
-                    sb.AppendLine($"redirectcomports:i:{redirectcomports}");
-                    sb.AppendLine($"redirectsmartcards:i:{redirectsmartcards}");
-                    sb.AppendLine($"redirectdrives:i:{redirectdrives}");
-                    // 密碼
-                    if (savePassword && !string.IsNullOrEmpty(this.textPassword?.Text))
-                    {
-                        // RDP 密碼需加密，這裡僅示意寫入明文（實務應用請用加密API）
-                        sb.AppendLine($"password 51:b:{Convert.ToBase64String(System.Text.Encoding.Unicode.GetBytes(this.textPassword.Text))}");
-                    }
-                    // Password is not saved in plaintext for RDP files
-
-                    // Ensure directory exists
-                    string rdpDir = System.IO.Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                        "RDP");
-                    if (!System.IO.Directory.Exists(rdpDir))
-                        System.IO.Directory.CreateDirectory(rdpDir);
-
-                    // 直接用自訂名稱存檔
-                    string filePath = System.IO.Path.Combine(rdpDir, fileName);
-
-                    // Write file
-                    System.IO.File.WriteAllText(filePath, sb.ToString(), System.Text.Encoding.Unicode);
+                    SaveRdpFile(filePath, savePassword);
+                    AddOrUpdatePresetList(inputName, filePath);
 
                     MessageBox.Show($"RDP 設定已儲存至: {filePath}", "儲存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -468,61 +499,7 @@ namespace remote_window
                     return;
                 }
                 string filePath = rdpFileMap[name];
-
-                // Gather settings from form
-                string remoteAddress = this.textRemoteAddress?.Text ?? "";
-                string port = this.numRemotePort?.Value.ToString() ?? "3389";
-                string username = this.comboUserAccount?.Text ?? "";
-                string resolution = this.lblNowRes?.Text ?? "1920x1080";
-                bool fullscreen = this.chkFullscreen?.Checked ?? true;
-                bool multiScreen = this.chkMultiScreen?.Checked ?? false;
-                string colorDepth = (this.radColordepth32 != null && this.radColordepth32.Checked) ? "32" : "16";
-
-                int audiomode = 0;
-                if (this.radAudio_remote != null && this.radAudio_remote.Checked) audiomode = 1;
-                else if (this.radAudio_noplay != null && this.radAudio_noplay.Checked) audiomode = 2;
-
-                int audiocapturemode = 0;
-                if (this.radRecord_local != null && this.radRecord_local.Checked) audiocapturemode = 1;
-
-                int redirectclipboard = 0, redirectprinters = 0, redirectsmartcards = 0, redirectcomports = 0, redirectdrives = 0;
-                if (this.treeDeviceList != null)
-                {
-                    foreach (TreeNode node in this.treeDeviceList.Nodes)
-                    {
-                        if (node.Name == "Clipboard") redirectclipboard = node.Checked ? 1 : 0;
-                        if (node.Name == "Printer") redirectprinters = node.Checked ? 1 : 0;
-                        if (node.Name == "SmartCard") redirectsmartcards = node.Checked ? 1 : 0;
-                        if (node.Name == "Ports") redirectcomports = node.Checked ? 1 : 0;
-                        if (node.Name == "Drive") redirectdrives = node.Checked ? 1 : 0;
-                    }
-                }
-
-                string[] resParts = resolution.Split('x');
-                string width = resParts.Length > 0 ? resParts[0] : "1920";
-                string height = resParts.Length > 1 ? resParts[1] : "1080";
-
-                var sb = new System.Text.StringBuilder();
-                sb.AppendLine($"full address:s:{remoteAddress}:{port}");
-                sb.AppendLine($"username:s:{username}");
-                sb.AppendLine($"screen mode id:i:{(fullscreen ? 2 : 1)}");
-                sb.AppendLine($"use multimon:i:{(multiScreen ? 1 : 0)}");
-                sb.AppendLine($"desktopwidth:i:{width}");
-                sb.AppendLine($"desktopheight:i:{height}");
-                sb.AppendLine($"session bpp:i:{colorDepth}");
-                sb.AppendLine($"audiomode:i:{audiomode}");
-                sb.AppendLine($"audiocapturemode:i:{audiocapturemode}");
-                sb.AppendLine($"redirectclipboard:i:{redirectclipboard}");
-                sb.AppendLine($"redirectprinters:i:{redirectprinters}");
-                sb.AppendLine($"redirectcomports:i:{redirectcomports}");
-                sb.AppendLine($"redirectsmartcards:i:{redirectsmartcards}");
-                sb.AppendLine($"redirectdrives:i:{redirectdrives}");
-                if (!string.IsNullOrEmpty(this.textPassword?.Text))
-                {
-                    sb.AppendLine($"password 51:b:{Convert.ToBase64String(System.Text.Encoding.Unicode.GetBytes(this.textPassword.Text))}");
-                }
-
-                System.IO.File.WriteAllText(filePath, sb.ToString(), System.Text.Encoding.Unicode);
+                SaveRdpFile(filePath, true);
                 MessageBox.Show($"已將變更儲存至: {filePath}", "儲存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -566,7 +543,42 @@ namespace remote_window
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            // todo: Implement RDP connection launch using settings on the form
+            try
+            {
+                string tempPath = Path.Combine(Path.GetTempPath(), $"BetterRDPLauncher_{Guid.NewGuid()}.rdp");
+                SaveRdpFile(tempPath, true);
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "mstsc.exe",
+                    Arguments = $"\"{tempPath}\"",
+                    UseShellExecute = true
+                };
+
+                Process.Start(psi);
+
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        System.Threading.Thread.Sleep(5000);
+                        if (File.Exists(tempPath))
+                        {
+                            File.Delete(tempPath);
+                        }
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
+                });
+
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"無法啟動遠端桌面: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
