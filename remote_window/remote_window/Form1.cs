@@ -129,40 +129,43 @@ namespace remote_window
 
         private string BuildRdpFileContent(RdpSettings settings, bool includePassword)
         {
+            string fullAddress = BuildFullAddress(settings.RemoteAddress, settings.Port);
             string[] resParts = (settings.Resolution ?? "1920x1080").Split('x');
             string width = resParts.Length > 0 ? resParts[0] : "1920";
             string height = resParts.Length > 1 ? resParts[1] : "1080";
             string newline = "\r\n";
 
-            var sb = new StringBuilder();
-            sb.Append($"full address:s:{settings.RemoteAddress}:{settings.Port}").Append(newline);
-            sb.Append($"username:s:{settings.Username}").Append(newline);
-            sb.Append($"screen mode id:i:{(settings.Fullscreen ? 2 : 1)}").Append(newline);
-            sb.Append($"use multimon:i:{(settings.MultiScreen ? 1 : 0)}").Append(newline);
-            sb.Append($"desktopwidth:i:{width}").Append(newline);
-            sb.Append($"desktopheight:i:{height}").Append(newline);
-            sb.Append($"session bpp:i:{settings.ColorDepth}").Append(newline);
-            sb.Append($"smart sizing:i:{(settings.Fullscreen ? 0 : 1)}").Append(newline);
-            sb.Append($"audiomode:i:{settings.AudioMode}").Append(newline);
-            sb.Append($"audiocapturemode:i:{settings.AudioCaptureMode}").Append(newline);
-            sb.Append($"redirectclipboard:i:{(settings.RedirectClipboard ? 1 : 0)}").Append(newline);
-            sb.Append($"redirectprinters:i:{(settings.RedirectPrinters ? 1 : 0)}").Append(newline);
-            sb.Append($"redirectcomports:i:{(settings.RedirectComports ? 1 : 0)}").Append(newline);
-            sb.Append($"redirectsmartcards:i:{(settings.RedirectSmartcards ? 1 : 0)}").Append(newline);
-            sb.Append($"drivestoredirect:s:{(settings.RedirectDrives ? "*" : string.Empty)}").Append(newline);
-            sb.Append("autoreconnection enabled:i:1").Append(newline);
-            sb.Append("displayconnectionbar:i:1").Append(newline);
-            sb.Append("compression:i:1").Append(newline);
-            sb.Append("bitmapcachepersistenable:i:1").Append(newline);
-            sb.Append("authentication level:i:2").Append(newline);
-            sb.Append("enablecredsspsupport:i:1").Append(newline);
+            var lines = new List<string>
+            {
+                $"full address:s:{fullAddress}",
+                $"username:s:{settings.Username}",
+                $"screen mode id:i:{(settings.Fullscreen ? 2 : 1)}",
+                $"use multimon:i:{(settings.MultiScreen ? 1 : 0)}",
+                $"desktopwidth:i:{width}",
+                $"desktopheight:i:{height}",
+                $"session bpp:i:{settings.ColorDepth}",
+                $"smart sizing:i:{(settings.Fullscreen ? 0 : 1)}",
+                $"audiomode:i:{settings.AudioMode}",
+                $"audiocapturemode:i:{settings.AudioCaptureMode}",
+                $"redirectclipboard:i:{(settings.RedirectClipboard ? 1 : 0)}",
+                $"redirectprinters:i:{(settings.RedirectPrinters ? 1 : 0)}",
+                $"redirectcomports:i:{(settings.RedirectComports ? 1 : 0)}",
+                $"redirectsmartcards:i:{(settings.RedirectSmartcards ? 1 : 0)}",
+                settings.RedirectDrives ? "drivestoredirect:s:*" : "redirectdrives:i:0",
+                "autoreconnection enabled:i:1",
+                "displayconnectionbar:i:1",
+                "compression:i:1",
+                "bitmapcachepersistenable:i:1",
+                "authentication level:i:2",
+                "enablecredsspsupport:i:1"
+            };
 
             if (includePassword && !string.IsNullOrEmpty(settings.Password))
             {
-                sb.Append($"password 51:b:{BuildPasswordBlob(settings.Password)}").Append(newline);
+                lines.Add($"password 51:b:{BuildPasswordBlob(settings.Password)}");
             }
 
-            return sb.ToString();
+            return string.Join(newline, lines) + newline;
         }
 
         private void SaveRdpFile(string filePath, bool includePassword)
@@ -195,6 +198,29 @@ namespace remote_window
             {
                 return string.Empty;
             }
+        }
+
+        private string BuildFullAddress(string remoteAddress, string port)
+        {
+            string address = (remoteAddress ?? string.Empty).Trim();
+            string portText = (port ?? "3389").Trim();
+            if (string.IsNullOrEmpty(address))
+            {
+                throw new InvalidOperationException("請輸入遠端主機位址。");
+            }
+
+            if (address.Contains(":"))
+            {
+                // Already has a port or IPv6 notation; do not append duplicate port
+                return address;
+            }
+
+            if (string.IsNullOrEmpty(portText))
+            {
+                return address;
+            }
+
+            return $"{address}:{portText}";
         }
 
         private void Form1_Load(object sender, EventArgs e)
