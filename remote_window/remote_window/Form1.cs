@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 
 namespace remote_window
 {
@@ -254,10 +255,28 @@ namespace remote_window
 
             if (includePassword && !string.IsNullOrEmpty(this.textPassword?.Text))
             {
-                sb.AppendLine($"password 51:b:{Convert.ToBase64String(System.Text.Encoding.Unicode.GetBytes(this.textPassword.Text))}");
+                string encryptedPassword = EncryptPassword(this.textPassword.Text);
+                if (!string.IsNullOrEmpty(encryptedPassword))
+                {
+                    sb.AppendLine($"password 51:b:{encryptedPassword}");
+                }
             }
 
             return sb.ToString();
+        }
+
+        private string EncryptPassword(string password)
+        {
+            try
+            {
+                byte[] passwordBytes = System.Text.Encoding.Unicode.GetBytes(password);
+                byte[] protectedBytes = ProtectedData.Protect(passwordBytes, null, DataProtectionScope.CurrentUser);
+                return Convert.ToBase64String(protectedBytes);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private void SaveRdpFile(string filePath, bool includePassword)
