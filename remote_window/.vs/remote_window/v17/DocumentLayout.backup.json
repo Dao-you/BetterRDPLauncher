@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|c:\\users\\qaz93\\documents\\betterrdplauncher\\remote_window\\remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -19,12 +15,16 @@
       "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\saverdpdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\saverdpdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\saverdpdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\saverdpdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\saverdpdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{03217205-46A3-44CF-9C25-A7C0FA3D3738}|remote_window\\remote_window.csproj|solutionrelative:remote_window\\saverdpdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,35 +34,49 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Program.cs",
+              "RelativeDocumentMoniker": "remote_window\\Program.cs",
+              "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Program.cs",
+              "RelativeToolTip": "remote_window\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-20T13:14:13.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Form1.Designer.cs",
               "DocumentMoniker": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.Designer.cs",
               "RelativeDocumentMoniker": "remote_window\\Form1.Designer.cs",
               "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.Designer.cs",
               "RelativeToolTip": "remote_window\\Form1.Designer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAIQDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-20T16:10:59.515Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "SaveRdpDialog.cs [\u8A2D\u8A08]",
               "DocumentMoniker": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\SaveRdpDialog.cs",
               "RelativeDocumentMoniker": "remote_window\\SaveRdpDialog.cs",
               "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\SaveRdpDialog.cs [\u8A2D\u8A08]",
               "RelativeToolTip": "remote_window\\SaveRdpDialog.cs [\u8A2D\u8A08]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-20T15:56:31.92Z"
+              "WhenOpened": "2025-12-20T15:56:31.92Z",
+              "EditorCaption": " [\u8A2D\u8A08]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "SaveRdpDialog.cs",
               "DocumentMoniker": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\SaveRdpDialog.cs",
               "RelativeDocumentMoniker": "remote_window\\SaveRdpDialog.cs",
@@ -70,17 +84,18 @@
               "RelativeToolTip": "remote_window\\SaveRdpDialog.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-20T15:55:56.609Z"
+              "WhenOpened": "2025-12-20T15:55:56.609Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.cs",
               "RelativeDocumentMoniker": "remote_window\\Form1.cs",
               "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.cs",
               "RelativeToolTip": "remote_window\\Form1.cs",
-              "ViewState": "AgIAAO8BAAAAAAAAAAAhwAQCAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAI4AAAAAAAAAAAAAAKgAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-20T13:24:15.579Z",
               "EditorCaption": ""
@@ -88,19 +103,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Program.cs",
-              "RelativeDocumentMoniker": "remote_window\\Program.cs",
-              "ToolTip": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Program.cs",
-              "RelativeToolTip": "remote_window\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-20T13:14:13.237Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
               "Title": "Form1.cs [\u8A2D\u8A08]",
               "DocumentMoniker": "C:\\Users\\qaz93\\Documents\\BetterRDPLauncher\\remote_window\\remote_window\\Form1.cs",
               "RelativeDocumentMoniker": "remote_window\\Form1.cs",

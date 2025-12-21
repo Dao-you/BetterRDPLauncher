@@ -87,13 +87,6 @@ namespace remote_window
             if (listSavedPreset.SelectedItem == null) return;
             string name = listSavedPreset.SelectedItem.ToString();
             lblPresetName.Text = name;
-            if (name == DefaultListEntry)
-            {
-                ResetFormToDefaults();
-                this.btnSave.Enabled = false;
-                this.btnDelete.Enabled = false;
-                return;
-            }
             if (!rdpFileMap.ContainsKey(name)) return;
             string file = rdpFileMap[name];
             try

@@ -29,21 +29,21 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("剪貼簿");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("印表機");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("智慧卡或 Windows Hello 企業版");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("WebAuthn(Windows Hello 或安全性金鑰)");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("連接埠");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("位置");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("視訊擷取裝置", new System.Windows.Forms.TreeNode[] {
-            treeNode19});
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("稍後插入的磁碟機");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("磁碟機", new System.Windows.Forms.TreeNode[] {
-            treeNode21});
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("其他支援即插即用 (PnP) 的裝置", new System.Windows.Forms.TreeNode[] {
-            treeNode23});
+            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("剪貼簿");
+            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("印表機");
+            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("智慧卡或 Windows Hello 企業版");
+            System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("WebAuthn(Windows Hello 或安全性金鑰)");
+            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("連接埠");
+            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("位置");
+            System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
+            System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("視訊擷取裝置", new System.Windows.Forms.TreeNode[] {
+            treeNode31});
+            System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("稍後插入的磁碟機");
+            System.Windows.Forms.TreeNode treeNode34 = new System.Windows.Forms.TreeNode("磁碟機", new System.Windows.Forms.TreeNode[] {
+            treeNode33});
+            System.Windows.Forms.TreeNode treeNode35 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
+            System.Windows.Forms.TreeNode treeNode36 = new System.Windows.Forms.TreeNode("其他支援即插即用 (PnP) 的裝置", new System.Windows.Forms.TreeNode[] {
+            treeNode35});
             this.tabAllSettings = new System.Windows.Forms.TabControl();
             this.tabBasic = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -331,9 +331,9 @@
             this.lblPresetName.Font = new System.Drawing.Font("微軟正黑體", 10F, System.Drawing.FontStyle.Bold);
             this.lblPresetName.Location = new System.Drawing.Point(162, 24);
             this.lblPresetName.Name = "lblPresetName";
-            this.lblPresetName.Size = new System.Drawing.Size(78, 18);
+            this.lblPresetName.Size = new System.Drawing.Size(90, 18);
             this.lblPresetName.TabIndex = 10;
-            this.lblPresetName.Text = "新增的連線";
+            this.lblPresetName.Text = "新增的連線...";
             // 
             // numRemotePort
             // 
@@ -470,6 +470,7 @@
             // radRecord_local
             // 
             this.radRecord_local.AutoSize = true;
+            this.radRecord_local.Checked = true;
             this.radRecord_local.Font = new System.Drawing.Font("微軟正黑體", 10F);
             this.radRecord_local.Location = new System.Drawing.Point(175, 35);
             this.radRecord_local.Margin = new System.Windows.Forms.Padding(2);
@@ -536,6 +537,7 @@
             // radAudio_local
             // 
             this.radAudio_local.AutoSize = true;
+            this.radAudio_local.Checked = true;
             this.radAudio_local.Font = new System.Drawing.Font("微軟正黑體", 10F);
             this.radAudio_local.Location = new System.Drawing.Point(175, 33);
             this.radAudio_local.Margin = new System.Windows.Forms.Padding(2);
@@ -603,44 +605,44 @@
             this.treeDeviceList.Location = new System.Drawing.Point(165, 51);
             this.treeDeviceList.Margin = new System.Windows.Forms.Padding(2);
             this.treeDeviceList.Name = "treeDeviceList";
-            treeNode13.Checked = true;
-            treeNode13.Name = "Clipboard";
-            treeNode13.Text = "剪貼簿";
-            treeNode14.Checked = true;
-            treeNode14.Name = "Printer";
-            treeNode14.Text = "印表機";
-            treeNode15.Checked = true;
-            treeNode15.Name = "SmartCard";
-            treeNode15.Text = "智慧卡或 Windows Hello 企業版";
-            treeNode16.Checked = true;
-            treeNode16.Name = "WebAuth";
-            treeNode16.Text = "WebAuthn(Windows Hello 或安全性金鑰)";
-            treeNode17.Name = "Ports";
-            treeNode17.Text = "連接埠";
-            treeNode18.Name = "Location";
-            treeNode18.Text = "位置";
-            treeNode19.Name = "Vid_later";
-            treeNode19.Text = "稍後插入的裝置";
-            treeNode20.Name = "VideoCapture";
-            treeNode20.Text = "視訊擷取裝置";
-            treeNode21.Name = "Drive_later";
-            treeNode21.Text = "稍後插入的磁碟機";
-            treeNode22.Name = "Drive";
-            treeNode22.Text = "磁碟機";
-            treeNode23.Name = "PnP_later";
-            treeNode23.Text = "稍後插入的裝置";
-            treeNode24.Name = "PnP";
-            treeNode24.Text = "其他支援即插即用 (PnP) 的裝置";
+            treeNode25.Checked = true;
+            treeNode25.Name = "Clipboard";
+            treeNode25.Text = "剪貼簿";
+            treeNode26.Checked = true;
+            treeNode26.Name = "Printer";
+            treeNode26.Text = "印表機";
+            treeNode27.Checked = true;
+            treeNode27.Name = "SmartCard";
+            treeNode27.Text = "智慧卡或 Windows Hello 企業版";
+            treeNode28.Checked = true;
+            treeNode28.Name = "WebAuth";
+            treeNode28.Text = "WebAuthn(Windows Hello 或安全性金鑰)";
+            treeNode29.Name = "Ports";
+            treeNode29.Text = "連接埠";
+            treeNode30.Name = "Location";
+            treeNode30.Text = "位置";
+            treeNode31.Name = "Vid_later";
+            treeNode31.Text = "稍後插入的裝置";
+            treeNode32.Name = "VideoCapture";
+            treeNode32.Text = "視訊擷取裝置";
+            treeNode33.Name = "Drive_later";
+            treeNode33.Text = "稍後插入的磁碟機";
+            treeNode34.Name = "Drive";
+            treeNode34.Text = "磁碟機";
+            treeNode35.Name = "PnP_later";
+            treeNode35.Text = "稍後插入的裝置";
+            treeNode36.Name = "PnP";
+            treeNode36.Text = "其他支援即插即用 (PnP) 的裝置";
             this.treeDeviceList.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode13,
-            treeNode14,
-            treeNode15,
-            treeNode16,
-            treeNode17,
-            treeNode18,
-            treeNode20,
-            treeNode22,
-            treeNode24});
+            treeNode25,
+            treeNode26,
+            treeNode27,
+            treeNode28,
+            treeNode29,
+            treeNode30,
+            treeNode32,
+            treeNode34,
+            treeNode36});
             this.treeDeviceList.Size = new System.Drawing.Size(367, 125);
             this.treeDeviceList.TabIndex = 5;
             // 
@@ -727,11 +729,14 @@
             this.btnConnect.TabIndex = 1;
             this.btnConnect.Text = "連線";
             this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // listSavedPreset
             // 
             this.listSavedPreset.FormattingEnabled = true;
             this.listSavedPreset.ItemHeight = 17;
+            this.listSavedPreset.Items.AddRange(new object[] {
+            "新增的連線..."});
             this.listSavedPreset.Location = new System.Drawing.Point(12, 39);
             this.listSavedPreset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listSavedPreset.Name = "listSavedPreset";
@@ -750,6 +755,7 @@
             // 
             // btnSave
             // 
+            this.btnSave.Enabled = false;
             this.btnSave.Font = new System.Drawing.Font("微軟正黑體", 10F);
             this.btnSave.Location = new System.Drawing.Point(138, 438);
             this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -762,6 +768,7 @@
             // 
             // btnDelete
             // 
+            this.btnDelete.Enabled = false;
             this.btnDelete.Font = new System.Drawing.Font("微軟正黑體", 10F);
             this.btnDelete.Location = new System.Drawing.Point(12, 438);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);

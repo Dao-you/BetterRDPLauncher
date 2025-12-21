@@ -14,7 +14,6 @@ namespace remote_window
     {
         private string rdpDir;
         private Dictionary<string, string> rdpFileMap = new Dictionary<string, string>();
-        private const string DefaultListEntry = "新增的連線...";
         public Form1()
         {
             InitializeComponent();
@@ -65,9 +64,6 @@ namespace remote_window
             rdpDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "RDP");
             listSavedPreset.Items.Clear();
             rdpFileMap.Clear();
-
-            // Always have default first entry for creating a new connection
-            listSavedPreset.Items.Add(DefaultListEntry);
             if (System.IO.Directory.Exists(rdpDir))
             {
                 var files = System.IO.Directory.GetFiles(rdpDir, "*.rdp");
@@ -77,8 +73,6 @@ namespace remote_window
                     listSavedPreset.Items.Add(name);
                     rdpFileMap[name] = file;
                 }
-            // select default
-            listSavedPreset.SelectedIndex = 0;
             }
         }
 
@@ -87,13 +81,6 @@ namespace remote_window
             if (listSavedPreset.SelectedItem == null) return;
             string name = listSavedPreset.SelectedItem.ToString();
             lblPresetName.Text = name;
-            if (name == DefaultListEntry)
-            {
-                ResetFormToDefaults();
-                this.btnSave.Enabled = false;
-                this.btnDelete.Enabled = false;
-                return;
-            }
             if (!rdpFileMap.ContainsKey(name)) return;
             string file = rdpFileMap[name];
             try
@@ -176,43 +163,6 @@ namespace remote_window
                 }
             }
             catch { }
-            // enable save/delete for actual presets
-            this.btnSave.Enabled = true;
-            this.btnDelete.Enabled = true;
-        }
-
-        private void ResetFormToDefaults()
-        {
-            // Basic fields
-            this.lblPresetName.Text = DefaultListEntry;
-            this.textRemoteAddress.Text = string.Empty;
-            this.textPassword.Text = string.Empty;
-            this.comboUserAccount.Text = string.Empty;
-            this.numRemotePort.Value = 3389;
-            this.chkIsAdmin.Checked = false;
-
-            // Display defaults
-            this.chkFullscreen.Checked = true;
-            this.chkMultiScreen.Checked = false;
-            this.trackRes.Value = 11;
-            this.lblNowRes.Text = "1920x1080";
-            this.radColordepth32.Checked = true;
-
-            // Audio defaults
-            this.radAudio_local.Checked = true;
-            this.radRecord_local.Checked = true;
-
-            // Resources defaults (match designer defaults)
-            if (this.treeDeviceList != null)
-            {
-                foreach (TreeNode node in this.treeDeviceList.Nodes)
-                {
-                    if (node.Name == "Clipboard" || node.Name == "Printer" || node.Name == "SmartCard" || node.Name == "WebAuth")
-                        node.Checked = true;
-                    else
-                        node.Checked = false;
-                }
-            }
         }
 
         private void SetTrackResByWidth(string width)
