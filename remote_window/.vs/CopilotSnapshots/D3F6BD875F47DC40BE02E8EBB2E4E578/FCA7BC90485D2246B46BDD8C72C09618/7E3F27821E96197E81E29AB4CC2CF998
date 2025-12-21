@@ -183,7 +183,12 @@ namespace remote_window
             // MSTSC expects DPAPI encrypted bytes represented as hex for "password 51:b:".
             if (string.IsNullOrEmpty(password)) return string.Empty;
             byte[] pwBytes = Encoding.Unicode.GetBytes(password);
-            byte[] enc = DpapiProtect(pwBytes);
+            byte[] enc = System.Security.Cryptography.ProtectedData.Protect(
+                pwBytes,
+                optionalEntropy: null,
+                scope: System.Security.Cryptography.DataProtectionScope.CurrentUser
+            );
+            // Convert to HEX (uppercase, no dashes)
             var sb = new StringBuilder(enc.Length * 2);
             foreach (byte b in enc)
             {
@@ -309,7 +314,7 @@ namespace remote_window
                         }
                         try
                         {
-                            var decrypted = DpapiUnprotect(data);
+                            var decrypted = System.Security.Cryptography.ProtectedData.Unprotect(data, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
                             return Encoding.Unicode.GetString(decrypted);
                         }
                         catch
