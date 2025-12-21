@@ -44,68 +44,6 @@ namespace remote_window
             this.listSavedPreset.SelectedIndexChanged += listSavedPreset_SelectedIndexChanged;
         }
 
-        // DPAPI P/Invoke wrappers to avoid dependency issues with ProtectedData in some build setups
-        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-        private struct DATA_BLOB
-        {
-            public int cbData;
-            public IntPtr pbData;
-        }
-
-        [System.Runtime.InteropServices.DllImport("crypt32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
-        private static extern bool CryptProtectData(ref DATA_BLOB pDataIn, string szDataDescr, IntPtr pOptionalEntropy, IntPtr pvReserved, IntPtr pPromptStruct, int dwFlags, out DATA_BLOB pDataOut);
-
-        [System.Runtime.InteropServices.DllImport("crypt32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
-        private static extern bool CryptUnprotectData(ref DATA_BLOB pDataIn, StringBuilder ppszDataDescr, IntPtr pOptionalEntropy, IntPtr pvReserved, IntPtr pPromptStruct, int dwFlags, out DATA_BLOB pDataOut);
-
-        private static byte[] DpapiProtect(byte[] plain)
-        {
-            var inBlob = new DATA_BLOB();
-            inBlob.cbData = plain.Length;
-            inBlob.pbData = System.Runtime.InteropServices.Marshal.AllocHGlobal(plain.Length);
-            try
-            {
-                System.Runtime.InteropServices.Marshal.Copy(plain, 0, inBlob.pbData, plain.Length);
-                DATA_BLOB outBlob;
-                const int CRYPTPROTECT_UI_FORBIDDEN = 0x1;
-                bool ok = CryptProtectData(ref inBlob, null, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, CRYPTPROTECT_UI_FORBIDDEN, out outBlob);
-                if (!ok) throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
-                byte[] encrypted = new byte[outBlob.cbData];
-                System.Runtime.InteropServices.Marshal.Copy(outBlob.pbData, encrypted, 0, outBlob.cbData);
-                // free outBlob.pbData allocated by API
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(outBlob.pbData);
-                return encrypted;
-            }
-            finally
-            {
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(inBlob.pbData);
-            }
-        }
-
-        private static byte[] DpapiUnprotect(byte[] encrypted)
-        {
-            var inBlob = new DATA_BLOB();
-            inBlob.cbData = encrypted.Length;
-            inBlob.pbData = System.Runtime.InteropServices.Marshal.AllocHGlobal(encrypted.Length);
-            try
-            {
-                System.Runtime.InteropServices.Marshal.Copy(encrypted, 0, inBlob.pbData, encrypted.Length);
-                DATA_BLOB outBlob;
-                StringBuilder desc = new StringBuilder();
-                const int CRYPTPROTECT_UI_FORBIDDEN = 0x1;
-                bool ok = CryptUnprotectData(ref inBlob, desc, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, CRYPTPROTECT_UI_FORBIDDEN, out outBlob);
-                if (!ok) throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
-                byte[] plain = new byte[outBlob.cbData];
-                System.Runtime.InteropServices.Marshal.Copy(outBlob.pbData, plain, 0, outBlob.cbData);
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(outBlob.pbData);
-                return plain;
-            }
-            finally
-            {
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(inBlob.pbData);
-            }
-        }
-
         // Move file to recycle bin using SHFileOperation
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
         private struct SHFILEOPSTRUCT
@@ -183,7 +121,12 @@ namespace remote_window
             // MSTSC expects DPAPI encrypted bytes represented as hex for "password 51:b:".
             if (string.IsNullOrEmpty(password)) return string.Empty;
             byte[] pwBytes = Encoding.Unicode.GetBytes(password);
-            byte[] enc = DpapiProtect(pwBytes);
+            byte[] enc = System.Security.Cryptography.ProtectedData.Protect(
+                pwBytes,
+                optionalEntropy: null,
+                scope: System.Security.Cryptography.DataProtectionScope.CurrentUser
+            );
+            // Convert to HEX (uppercase, no dashes)
             var sb = new StringBuilder(enc.Length * 2);
             foreach (byte b in enc)
             {
@@ -309,7 +252,7 @@ namespace remote_window
                         }
                         try
                         {
-                            var decrypted = DpapiUnprotect(data);
+                            var decrypted = System.Security.Cryptography.ProtectedData.Unprotect(data, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
                             return Encoding.Unicode.GetString(decrypted);
                         }
                         catch
