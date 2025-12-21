@@ -1,0 +1,908 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Diagnostics;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace remote_window
+{
+    public partial class Form1 : Form
+    {
+        
+        private string rdpDir;
+        private Dictionary<string, string> rdpFileMap = new Dictionary<string, string>();
+        private const string DefaultListEntry = "新增的連線...";
+
+        private class RdpSettings
+        {
+            public string RemoteAddress { get; set; } = string.Empty;
+            public string Port { get; set; } = "3389";
+            public string Username { get; set; } = string.Empty;
+            public string Resolution { get; set; } = "1920x1080";
+            public bool Fullscreen { get; set; } = true;
+            public bool MultiScreen { get; set; } = false;
+            public string ColorDepth { get; set; } = "32";
+            public int AudioMode { get; set; } = 0;
+            public int AudioCaptureMode { get; set; } = 1;
+            public bool RedirectClipboard { get; set; } = true;
+            public bool RedirectPrinters { get; set; } = true;
+            public bool RedirectSmartcards { get; set; } = true;
+            public bool RedirectComports { get; set; } = false;
+            public bool RedirectDrives { get; set; } = false;
+            public string Password { get; set; } = string.Empty;
+        }
+        public Form1()
+        {
+            InitializeComponent();
+            this.Load += Form1_Load;
+            this.listSavedPreset.SelectedIndexChanged += listSavedPreset_SelectedIndexChanged;
+        }
+
+        // DPAPI P/Invoke wrappers to avoid dependency issues with ProtectedData in some build setups
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct DATA_BLOB
+        {
+            public int cbData;
+            public IntPtr pbData;
+        }
+
+        [System.Runtime.InteropServices.DllImport("crypt32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        private static extern bool CryptProtectData(ref DATA_BLOB pDataIn, string szDataDescr, IntPtr pOptionalEntropy, IntPtr pvReserved, IntPtr pPromptStruct, int dwFlags, out DATA_BLOB pDataOut);
+
+        [System.Runtime.InteropServices.DllImport("crypt32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        private static extern bool CryptUnprotectData(ref DATA_BLOB pDataIn, StringBuilder ppszDataDescr, IntPtr pOptionalEntropy, IntPtr pvReserved, IntPtr pPromptStruct, int dwFlags, out DATA_BLOB pDataOut);
+
+        private static byte[] DpapiProtect(byte[] plain)
+        {
+            var inBlob = new DATA_BLOB();
+            inBlob.cbData = plain.Length;
+            inBlob.pbData = System.Runtime.InteropServices.Marshal.AllocHGlobal(plain.Length);
+            try
+            {
+                System.Runtime.InteropServices.Marshal.Copy(plain, 0, inBlob.pbData, plain.Length);
+                DATA_BLOB outBlob;
+                const int CRYPTPROTECT_UI_FORBIDDEN = 0x1;
+                bool ok = CryptProtectData(ref inBlob, null, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, CRYPTPROTECT_UI_FORBIDDEN, out outBlob);
+                if (!ok) throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+                byte[] encrypted = new byte[outBlob.cbData];
+                System.Runtime.InteropServices.Marshal.Copy(outBlob.pbData, encrypted, 0, outBlob.cbData);
+                // free outBlob.pbData allocated by API
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(outBlob.pbData);
+                return encrypted;
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(inBlob.pbData);
+            }
+        }
+
+        private static byte[] DpapiUnprotect(byte[] encrypted)
+        {
+            var inBlob = new DATA_BLOB();
+            inBlob.cbData = encrypted.Length;
+            inBlob.pbData = System.Runtime.InteropServices.Marshal.AllocHGlobal(encrypted.Length);
+            try
+            {
+                System.Runtime.InteropServices.Marshal.Copy(encrypted, 0, inBlob.pbData, encrypted.Length);
+                DATA_BLOB outBlob;
+                StringBuilder desc = new StringBuilder();
+                const int CRYPTPROTECT_UI_FORBIDDEN = 0x1;
+                bool ok = CryptUnprotectData(ref inBlob, desc, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, CRYPTPROTECT_UI_FORBIDDEN, out outBlob);
+                if (!ok) throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+                byte[] plain = new byte[outBlob.cbData];
+                System.Runtime.InteropServices.Marshal.Copy(outBlob.pbData, plain, 0, outBlob.cbData);
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(outBlob.pbData);
+                return plain;
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(inBlob.pbData);
+            }
+        }
+
+        // Move file to recycle bin using SHFileOperation
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        private struct SHFILEOPSTRUCT
+        {
+            public IntPtr hwnd;
+            public uint wFunc;
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPWStr)]
+            public string pFrom;
+            [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPWStr)]
+            public string pTo;
+            public ushort fFlags;
+            public int fAnyOperationsAborted;
+            public IntPtr hNameMappings;
+            public IntPtr lpszProgressTitle;
+        }
+
+        [System.Runtime.InteropServices.DllImport("shell32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        private static extern int SHFileOperation(ref SHFILEOPSTRUCT lpFileOp);
+
+        private bool MoveToRecycleBin(string path)
+        {
+            try
+            {
+                var fs = new SHFILEOPSTRUCT();
+                fs.wFunc = 3; // FO_DELETE
+                // double-null terminated
+                fs.pFrom = path + "\0\0";
+                fs.fFlags = 0x0001 | 0x0040; // FOF_ALLOWUNDO | FOF_NOCONFIRMATION
+                int result = SHFileOperation(ref fs);
+                return result == 0 && fs.fAnyOperationsAborted == 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private RdpSettings CollectRdpSettings()
+        {
+            var settings = new RdpSettings();
+
+            settings.RemoteAddress = this.textRemoteAddress?.Text ?? string.Empty;
+            settings.Port = this.numRemotePort?.Value.ToString() ?? "3389";
+            settings.Username = this.comboUserAccount?.Text ?? string.Empty;
+            settings.Resolution = this.lblNowRes?.Text ?? "1920x1080";
+            settings.Fullscreen = this.chkFullscreen?.Checked ?? true;
+            settings.MultiScreen = this.chkMultiScreen?.Checked ?? false;
+            settings.ColorDepth = (this.radColordepth32 != null && this.radColordepth32.Checked) ? "32" : "16";
+            settings.Password = this.textPassword?.Text ?? string.Empty;
+
+            settings.AudioMode = 0;
+            if (this.radAudio_remote != null && this.radAudio_remote.Checked) settings.AudioMode = 1;
+            else if (this.radAudio_noplay != null && this.radAudio_noplay.Checked) settings.AudioMode = 2;
+
+            settings.AudioCaptureMode = (this.radRecord_local != null && this.radRecord_local.Checked) ? 1 : 0;
+
+            if (this.treeDeviceList != null)
+            {
+                foreach (TreeNode node in this.treeDeviceList.Nodes)
+                {
+                    if (node.Name == "Clipboard") settings.RedirectClipboard = node.Checked;
+                    if (node.Name == "Printer") settings.RedirectPrinters = node.Checked;
+                    if (node.Name == "SmartCard") settings.RedirectSmartcards = node.Checked;
+                    if (node.Name == "Ports") settings.RedirectComports = node.Checked;
+                    if (node.Name == "Drive") settings.RedirectDrives = node.Checked;
+                }
+            }
+
+            return settings;
+        }
+
+        private string BuildPasswordBlob(string password)
+        {
+            // Build DPAPI-encrypted blob and return as HEX (uppercase) string
+            // MSTSC expects DPAPI encrypted bytes represented as hex for "password 51:b:".
+            if (string.IsNullOrEmpty(password)) return string.Empty;
+            byte[] pwBytes = Encoding.Unicode.GetBytes(password);
+            byte[] enc = DpapiProtect(pwBytes);
+            var sb = new StringBuilder(enc.Length * 2);
+            foreach (byte b in enc)
+            {
+                sb.Append(b.ToString("X2"));
+            }
+            return sb.ToString();
+        }
+
+        private string BuildRdpFileContent(RdpSettings settings, bool includePassword)
+        {
+            string fullAddress = BuildFullAddress(settings.RemoteAddress, settings.Port);
+            string[] resParts = (settings.Resolution ?? "1920x1080").Split('x');
+            string width = resParts.Length > 0 ? resParts[0] : "1920";
+            string height = resParts.Length > 1 ? resParts[1] : "1080";
+            string newline = "\r\n";
+
+            var lines = new List<string>
+            {
+                $"full address:s:{fullAddress}",
+                $"username:s:{settings.Username}",
+                $"screen mode id:i:{(settings.Fullscreen ? 2 : 1)}",
+                $"use multimon:i:{(settings.MultiScreen ? 1 : 0)}",
+                $"desktopwidth:i:{width}",
+                $"desktopheight:i:{height}",
+                $"session bpp:i:{settings.ColorDepth}",
+                $"smart sizing:i:{(settings.Fullscreen ? 0 : 1)}",
+                $"audiomode:i:{settings.AudioMode}",
+                $"audiocapturemode:i:{settings.AudioCaptureMode}",
+                $"redirectclipboard:i:{(settings.RedirectClipboard ? 1 : 0)}",
+                $"redirectprinters:i:{(settings.RedirectPrinters ? 1 : 0)}",
+                $"redirectcomports:i:{(settings.RedirectComports ? 1 : 0)}",
+                $"redirectsmartcards:i:{(settings.RedirectSmartcards ? 1 : 0)}",
+                settings.RedirectDrives ? "drivestoredirect:s:*" : "redirectdrives:i:0",
+                "autoreconnection enabled:i:1",
+                "displayconnectionbar:i:1",
+                "compression:i:1",
+                "bitmapcachepersistenable:i:1",
+                "authentication level:i:2",
+                "enablecredsspsupport:i:1"
+            };
+
+            if (includePassword && !string.IsNullOrEmpty(settings.Password))
+            {
+                lines.Add($"password 51:b:{BuildPasswordBlob(settings.Password)}");
+            }
+
+            return string.Join(newline, lines) + newline;
+        }
+
+        private void SaveRdpFile(string filePath, bool includePassword)
+        {
+            var settings = CollectRdpSettings();
+            string content = BuildRdpFileContent(settings, includePassword);
+            string dir = System.IO.Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
+            {
+                System.IO.Directory.CreateDirectory(dir);
+            }
+            System.IO.File.WriteAllText(filePath, content, Encoding.Unicode);
+
+            // Basic validation to ensure RDP file contains required fields
+            if (!ValidateRdpFile(filePath))
+            {
+                throw new InvalidOperationException("產生的 RDP 檔案內容不完整或無法使用。請檢查輸入的主機與設定。");
+            }
+        }
+
+        private bool ValidateRdpFile(string filePath)
+        {
+            try
+            {
+                if (!System.IO.File.Exists(filePath)) return false;
+                var lines = System.IO.File.ReadAllLines(filePath, Encoding.Unicode);
+                string addressLine = null;
+                string userLine = null;
+                foreach (var line in lines)
+                {
+                    if (line.StartsWith("full address:s:", StringComparison.OrdinalIgnoreCase)) addressLine = line.Substring("full address:s:".Length);
+                    if (line.StartsWith("username:s:", StringComparison.OrdinalIgnoreCase)) userLine = line.Substring("username:s:".Length);
+                }
+                if (string.IsNullOrWhiteSpace(addressLine)) return false;
+                if (string.IsNullOrWhiteSpace(userLine)) return false;
+                // Verify address can be parsed by BuildFullAddress (will throw if invalid)
+                try
+                {
+                    // If addressLine already contains port or IPv6, BuildFullAddress will accept it
+                    BuildFullAddress(addressLine, this.numRemotePort?.Value.ToString() ?? "3389");
+                }
+                catch
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private string DecodePasswordFromBlob(string hexBlob)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(hexBlob)) return string.Empty;
+
+                // First, if looks like hex, try DPAPI unprotect (the intended format)
+                if (hexBlob.Length % 2 == 0)
+                {
+                    bool isHex = true;
+                    for (int i = 0; i < hexBlob.Length; i++)
+                    {
+                        char c = hexBlob[i];
+                        if (!Uri.IsHexDigit(c)) { isHex = false; break; }
+                    }
+                    if (isHex)
+                    {
+                        int len = hexBlob.Length / 2;
+                        byte[] data = new byte[len];
+                        for (int i = 0; i < len; i++)
+                        {
+                            data[i] = Convert.ToByte(hexBlob.Substring(i * 2, 2), 16);
+                        }
+                        try
+                        {
+                            var decrypted = DpapiUnprotect(data);
+                            return Encoding.Unicode.GetString(decrypted);
+                        }
+                        catch
+                        {
+                            // If DPAPI unprotect fails, fall through to other fallbacks
+                        }
+                        // If DPAPI failed, as a last resort try interpreting hex as raw unicode bytes
+                        try
+                        {
+                            return Encoding.Unicode.GetString(data);
+                        }
+                        catch { }
+                    }
+                }
+
+                // Next, try base64 (legacy cases where base64 was stored)
+                try
+                {
+                    var bytes = Convert.FromBase64String(hexBlob);
+                    return Encoding.Unicode.GetString(bytes);
+                }
+                catch { }
+
+                return string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        private string BuildFullAddress(string remoteAddress, string port)
+        {
+            string address = (remoteAddress ?? string.Empty).Trim();
+            string portText = (port ?? "3389").Trim();
+            if (string.IsNullOrEmpty(address))
+            {
+                throw new InvalidOperationException("請輸入遠端主機位址。");
+            }
+
+            if (address.Contains(":"))
+            {
+                // Already has a port or IPv6 notation; do not append duplicate port
+                return address;
+            }
+
+            if (string.IsNullOrEmpty(portText))
+            {
+                return address;
+            }
+
+            return $"{address}:{portText}";
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // 掃描 ~/RDP/*.rdp 並顯示於 listSavedPreset
+            rdpDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "RDP");
+            listSavedPreset.Items.Clear();
+            rdpFileMap.Clear();
+
+            // Always have default first entry for creating a new connection
+            listSavedPreset.Items.Add(DefaultListEntry);
+            if (System.IO.Directory.Exists(rdpDir))
+            {
+                var files = System.IO.Directory.GetFiles(rdpDir, "*.rdp");
+                foreach (var file in files)
+                {
+                    string name = System.IO.Path.GetFileNameWithoutExtension(file);
+                    listSavedPreset.Items.Add(name);
+                    rdpFileMap[name] = file;
+                }
+            }
+            // select default
+            listSavedPreset.SelectedIndex = 0;
+
+            // Ensure connect button gets initial focus so Enter activates it
+            try
+            {
+                this.btnConnect?.Focus();
+            }
+            catch { }
+            // initialize About frame player state
+            aboutFrameIndex = 1;
+            aboutMissCount = 0;
+        }
+
+        // About player state
+        private int aboutFrameIndex = 1;
+        private int aboutMissCount = 0;
+        private const int AboutMissThreshold = 250;
+
+        private void tabAllSettings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                bool isAbout = false;
+                if (this.tabAllSettings.SelectedTab != null)
+                {
+                    var sel = this.tabAllSettings.SelectedTab;
+                    if (sel == this.About) isAbout = true;
+                    else if (!string.IsNullOrEmpty(sel.Text) && (sel.Text.Equals("About", StringComparison.OrdinalIgnoreCase) || sel.Text.Equals("關於"))) isAbout = true;
+                    else if (this.groupBox9 != null && sel.Controls.Contains(this.groupBox9)) isAbout = true;
+                }
+
+                if (isAbout)
+                {
+                    //try { this.AAAApple.Font = new Font("Consolas", 9F); } catch { }
+                    try { this.AAAApple.WordWrap = false; } catch { }
+                    try { if (!this.timer1.Enabled) this.timer1.Start(); } catch { }
+                }
+                else
+                {
+                    try { if (this.timer1.Enabled) this.timer1.Stop(); } catch { }
+                }
+            }
+            catch { }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            // Each tick: find next available frame and display it. Use nested loops per requirement.
+            string framesDir = System.IO.Path.Combine(Application.StartupPath, "frames");
+            if (!System.IO.Directory.Exists(framesDir)) return;
+
+            bool displayed = false;
+
+            // Outer loop caps attempts per tick to avoid infinite loops
+            for (int outer = 0; outer < 1000 && !displayed; outer++)
+            {
+                // Inner loop: try to find next available frame; break when one displayed
+                while (!displayed)
+                {
+                    string fileName = $"BA{aboutFrameIndex}.txt";
+                    string path = System.IO.Path.Combine(framesDir, fileName);
+                    try
+                    {
+                        if (System.IO.File.Exists(path))
+                        {
+                            string content = System.IO.File.ReadAllText(path, Encoding.Unicode);
+                            this.AAAApple.Text = content;
+                            aboutFrameIndex++;
+                            aboutMissCount = 0;
+                            displayed = true;
+                            break; // found frame, exit inner loop
+                        }
+                        else
+                        {
+                            // missing frame -> skip
+                            aboutFrameIndex++;
+                            aboutMissCount++;
+                            if (aboutMissCount >= AboutMissThreshold)
+                            {
+                                // considered end; reset to start
+                                aboutFrameIndex = 1;
+                                aboutMissCount = 0;
+                                // continue searching from start in same tick
+                                continue;
+                            }
+                            // continue inner while to try next index
+                            continue;
+                        }
+                    }
+                    catch
+                    {
+                        // treat as miss
+                        aboutFrameIndex++;
+                        aboutMissCount++;
+                        if (aboutMissCount >= AboutMissThreshold)
+                        {
+                            aboutFrameIndex = 1;
+                            aboutMissCount = 0;
+                            continue;
+                        }
+                        continue;
+                    }
+                }
+            }
+        }
+
+        private void listSavedPreset_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listSavedPreset.SelectedItem == null) return;
+            string name = listSavedPreset.SelectedItem.ToString();
+            lblPresetName.Text = name;
+            if (name == DefaultListEntry)
+            {
+                ResetFormToDefaults();
+                this.btnSave.Enabled = false;
+                this.btnDelete.Enabled = false;
+                return;
+            }
+            if (!rdpFileMap.ContainsKey(name)) return;
+            string file = rdpFileMap[name];
+            try
+            {
+                var lines = System.IO.File.ReadAllLines(file, System.Text.Encoding.Unicode);
+                foreach (var line in lines)
+                {
+                    if (line.StartsWith("full address:s:"))
+                    {
+                        var val = line.Substring("full address:s:".Length);
+                        var parts = val.Split(':');
+                        this.textRemoteAddress.Text = parts[0];
+                        if (parts.Length > 1) this.numRemotePort.Value = int.TryParse(parts[1], out int p) ? p : 3389;
+                    }
+                    else if (line.StartsWith("username:s:"))
+                    {
+                        this.comboUserAccount.Text = line.Substring("username:s:".Length);
+                    }
+                    else if (line.StartsWith("screen mode id:i:"))
+                    {
+                        this.chkFullscreen.Checked = line.EndsWith("2");
+                    }
+                    else if (line.StartsWith("use multimon:i:"))
+                    {
+                        this.chkMultiScreen.Checked = line.EndsWith("1");
+                    }
+                    else if (line.StartsWith("desktopwidth:i:"))
+                    {
+                        string w = line.Substring("desktopwidth:i:".Length);
+                        // 設定 trackRes
+                        SetTrackResByWidth(w);
+                    }
+                    else if (line.StartsWith("session bpp:i:"))
+                    {
+                        string bpp = line.Substring("session bpp:i:".Length);
+                        if (bpp == "32") this.radColordepth32.Checked = true;
+                        else this.radColordepth16.Checked = true;
+                    }
+                    else if (line.StartsWith("audiomode:i:"))
+                    {
+                        string v = line.Substring("audiomode:i:".Length);
+                        if (v == "0") this.radAudio_local.Checked = true;
+                        else if (v == "1") this.radAudio_remote.Checked = true;
+                        else if (v == "2") this.radAudio_noplay.Checked = true;
+                    }
+                    else if (line.StartsWith("audiocapturemode:i:"))
+                    {
+                        string v = line.Substring("audiocapturemode:i:".Length);
+                        this.radRecord_local.Checked = (v == "1");
+                        this.radRecord_norec.Checked = (v != "1");
+                    }
+                    else if (line.StartsWith("redirectclipboard:i:"))
+                    {
+                        SetTreeDeviceChecked("Clipboard", line.EndsWith("1"));
+                    }
+                    else if (line.StartsWith("redirectprinters:i:"))
+                    {
+                        SetTreeDeviceChecked("Printer", line.EndsWith("1"));
+                    }
+                    else if (line.StartsWith("redirectsmartcards:i:"))
+                    {
+                        SetTreeDeviceChecked("SmartCard", line.EndsWith("1"));
+                    }
+                    else if (line.StartsWith("redirectcomports:i:"))
+                    {
+                        SetTreeDeviceChecked("Ports", line.EndsWith("1"));
+                    }
+                    else if (line.StartsWith("drivestoredirect:s:"))
+                    {
+                        var value = line.Substring("drivestoredirect:s:".Length);
+                        SetTreeDeviceChecked("Drive", !string.IsNullOrEmpty(value));
+                    }
+                    else if (line.StartsWith("redirectdrives:i:"))
+                    {
+                        SetTreeDeviceChecked("Drive", line.EndsWith("1"));
+                    }
+                    else if (line.StartsWith("password 51:b:"))
+                    {
+                        var blob = line.Substring("password 51:b:".Length);
+                        this.textPassword.Text = DecodePasswordFromBlob(blob);
+                    }
+                }
+            }
+            catch { }
+            // enable save/delete for actual presets
+            this.btnSave.Enabled = true;
+            this.btnDelete.Enabled = true;
+        }
+
+        private void ResetFormToDefaults()
+        {
+            // Basic fields
+            this.lblPresetName.Text = DefaultListEntry;
+            this.textRemoteAddress.Text = string.Empty;
+            this.textPassword.Text = string.Empty;
+            this.comboUserAccount.Text = string.Empty;
+            this.numRemotePort.Value = 3389;
+            this.chkIsAdmin.Checked = false;
+
+            // Display defaults
+            this.chkFullscreen.Checked = true;
+            this.chkMultiScreen.Checked = false;
+            this.trackRes.Value = 11;
+            this.lblNowRes.Text = "1920x1080";
+            this.radColordepth32.Checked = true;
+
+            // Audio defaults
+            this.radAudio_local.Checked = true;
+            this.radRecord_local.Checked = true;
+
+            // Resources defaults (match designer defaults)
+            if (this.treeDeviceList != null)
+            {
+                foreach (TreeNode node in this.treeDeviceList.Nodes)
+                {
+                    if (node.Name == "Clipboard" || node.Name == "Printer" || node.Name == "SmartCard" || node.Name == "WebAuth")
+                        node.Checked = true;
+                    else
+                        node.Checked = false;
+                }
+            }
+        }
+
+        private void SetTrackResByWidth(string width)
+        {
+            string[] resolutions = new string[]
+            {
+                "640x480",
+                "800x600",
+                "1024x768",
+                "1280x720",
+                "1280x768",
+                "1280x800",
+                "1280x1024",
+                "1366x768",
+                "1440x900",
+                "1400x1050",
+                "1680x1050",
+                "1920x1080"
+            };
+            for (int i = 0; i < resolutions.Length; i++)
+            {
+                if (resolutions[i].StartsWith(width + "x"))
+                {
+                    this.trackRes.Value = i;
+                    this.lblNowRes.Text = resolutions[i];
+                    break;
+                }
+            }
+        }
+
+        private void SetTreeDeviceChecked(string nodeName, bool isChecked)
+        {
+            if (this.treeDeviceList == null) return;
+            foreach (TreeNode node in this.treeDeviceList.Nodes)
+            {
+                if (node.Name == nodeName)
+                {
+                    node.Checked = isChecked;
+                    break;
+                }
+            }
+        }
+
+        private void chkToggleVisibleRemoteAddress_CheckedChanged(object sender, EventArgs e)
+        {
+            // Toggle masking for the remote address textbox (show/hide text like password)
+            try
+            {
+                var chk = sender as CheckBox;
+                if (chk != null && this.textRemoteAddress != null)
+                {
+                    // when checked -> show the address (no mask)
+                    // when unchecked -> mask the address
+                    this.textRemoteAddress.UseSystemPasswordChar = !chk.Checked;
+                }
+            }
+            catch
+            {
+                // safe fail
+            }
+        }
+
+        private void chkVisibleTogglePassword_CheckedChanged(object sender, EventArgs e)
+        {
+            // Toggle password masking for the password textbox
+            try
+            {
+                var chk = sender as CheckBox;
+                if (chk != null && this.textPassword != null)
+                {
+                    this.textPassword.UseSystemPasswordChar = !chk.Checked;
+                }
+            }
+            catch
+            {
+                // ignore
+            }
+
+        }
+
+        private void chkFullscreen_CheckedChanged(object sender, EventArgs e)
+        {
+            // When fullscreen enabled: allow multi-screen, disable resolution trackbar
+            // and dim the resolution labels. Reverse when disabled.
+            try
+            {
+                var chk = sender as CheckBox;
+                if (chk == null) return;
+
+                if (this.chkMultiScreen != null)
+                    this.chkMultiScreen.Enabled = chk.Checked;
+
+                if (this.trackRes != null)
+                    this.trackRes.Enabled = !chk.Checked;
+
+                var gray = SystemColors.GrayText;
+                var normal = SystemColors.ControlText;
+                if (this.lblNowRes != null)
+                    this.lblNowRes.ForeColor = chk.Checked ? gray : normal;
+                if (this.lblHintChoosingRes != null)
+                    this.lblHintChoosingRes.ForeColor = chk.Checked ? gray : normal;
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
+        private void trackRes_Scroll(object sender, EventArgs e)
+        {
+            // update the resolution label "lblNowRes" when the trackbar is scrolled
+            string[] resolutions = new string[]
+            {
+                "640x480",
+                "800x600",
+                "1024x768",
+                "1280x720",
+                "1280x768",
+                "1280x800",
+                "1280x1024",
+                "1366x768",
+                "1440x900",
+                "1400x1050",
+                "1680x1050",
+                "1920x1080"
+            };
+
+            if (this.trackRes != null && this.lblNowRes != null)
+            {
+                int idx = this.trackRes.Value;
+                if (idx >= 0 && idx < resolutions.Length)
+                {
+                    this.lblNowRes.Text = resolutions[idx];
+                }
+            }
+        }
+
+        private void btnSaveNew_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var dlg = new SaveRdpDialog())
+                {
+                    if (dlg.ShowDialog(this) != DialogResult.OK || string.IsNullOrWhiteSpace(dlg.FileName))
+                        return;
+                    string inputName = dlg.FileName;
+                    foreach (char c in System.IO.Path.GetInvalidFileNameChars())
+                        inputName = inputName.Replace(c.ToString(), "_");
+                    string fileName = inputName + ".rdp";
+                    bool savePassword = dlg.SavePassword;
+
+                    // Ensure directory exists
+                    string rdpDir = System.IO.Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                        "RDP");
+                    if (!System.IO.Directory.Exists(rdpDir))
+                        System.IO.Directory.CreateDirectory(rdpDir);
+
+                    string filePath = System.IO.Path.Combine(rdpDir, fileName);
+                    SaveRdpFile(filePath, savePassword);
+
+                    if (!rdpFileMap.ContainsKey(inputName))
+                    {
+                        rdpFileMap[inputName] = filePath;
+                        listSavedPreset.Items.Add(inputName);
+                    }
+
+                    MessageBox.Show($"RDP 設定已儲存至: {filePath}", "儲存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"儲存 RDP 設定時發生錯誤: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.listSavedPreset.SelectedItem == null)
+                {
+                    MessageBox.Show("請先選擇要儲存的設定檔。", "未選取", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                string name = this.listSavedPreset.SelectedItem.ToString();
+                if (!rdpFileMap.ContainsKey(name))
+                {
+                    MessageBox.Show("找不到對應的檔案路徑。", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                string filePath = rdpFileMap[name];
+
+                SaveRdpFile(filePath, includePassword: true);
+                MessageBox.Show($"已將變更儲存至: {filePath}", "儲存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"儲存失敗: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.listSavedPreset.SelectedItem == null)
+                {
+                    MessageBox.Show("請先選擇要刪除的設定檔。", "未選取", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                string name = this.listSavedPreset.SelectedItem.ToString();
+                if (!rdpFileMap.ContainsKey(name))
+                {
+                    MessageBox.Show("找不到對應的檔案路徑。", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                string filePath = rdpFileMap[name];
+
+                // Move to recycle bin using SHFileOperation
+                bool ok = MoveToRecycleBin(filePath);
+                if (!ok) throw new Exception("無法移動至資源回收筒。請確認檔案權限。");
+
+                // Remove from list and map
+                rdpFileMap.Remove(name);
+                listSavedPreset.Items.Remove(name);
+
+                MessageBox.Show($"已將檔案移至資源回收筒: {filePath}", "刪除成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"刪除失敗: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"BetterRDP_{Guid.NewGuid():N}.rdp");
+                SaveRdpFile(tempPath, includePassword: true);
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "mstsc.exe",
+                    Arguments = $"\"{tempPath}\"",
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        Thread.Sleep(5000);
+                        if (System.IO.File.Exists(tempPath))
+                        {
+                            System.IO.File.Delete(tempPath);
+                        }
+                    }
+                    catch { }
+                });
+
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"無法啟動遠端連線: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/Dao-you/BetterRDPLauncher",
+                UseShellExecute = true
+            });
+        }
+    }
+}

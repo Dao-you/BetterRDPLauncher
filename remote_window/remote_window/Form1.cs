@@ -15,6 +15,7 @@ namespace remote_window
 {
     public partial class Form1 : Form
     {
+        
         private string rdpDir;
         private Dictionary<string, string> rdpFileMap = new Dictionary<string, string>();
         private const string DefaultListEntry = "新增的連線...";
@@ -36,6 +37,57 @@ namespace remote_window
             public bool RedirectComports { get; set; } = false;
             public bool RedirectDrives { get; set; } = false;
             public string Password { get; set; } = string.Empty;
+        }
+
+        private string ReadTextFileAuto(string path)
+        {
+            // Read first bytes to detect BOM for UTF-8/UTF-16LE/UTF-16BE. If no BOM, assume UTF-8.
+            try
+            {
+                using (var fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
+                {
+                    byte[] bom = new byte[4];
+                    int read = fs.Read(bom, 0, bom.Length);
+                    // UTF-8 BOM
+                    if (read >= 3 && bom[0] == 0xEF && bom[1] == 0xBB && bom[2] == 0xBF)
+                    {
+                        fs.Position = 3;
+                        using (var sr = new System.IO.StreamReader(fs, Encoding.UTF8))
+                        {
+                            return sr.ReadToEnd();
+                        }
+                    }
+                    // UTF-16 LE BOM
+                    if (read >= 2 && bom[0] == 0xFF && bom[1] == 0xFE)
+                    {
+                        fs.Position = 2;
+                        using (var sr = new System.IO.StreamReader(fs, Encoding.Unicode))
+                        {
+                            return sr.ReadToEnd();
+                        }
+                    }
+                    // UTF-16 BE BOM
+                    if (read >= 2 && bom[0] == 0xFE && bom[1] == 0xFF)
+                    {
+                        fs.Position = 2;
+                        using (var sr = new System.IO.StreamReader(fs, Encoding.BigEndianUnicode))
+                        {
+                            return sr.ReadToEnd();
+                        }
+                    }
+
+                    // No BOM -> assume UTF8 without BOM (common for checked-in text)
+                    fs.Position = 0;
+                    using (var sr = new System.IO.StreamReader(fs, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false)))
+                    {
+                        return sr.ReadToEnd();
+                    }
+                }
+            }
+            catch
+            {
+                try { return System.IO.File.ReadAllText(path, Encoding.Default); } catch { return string.Empty; }
+            }
         }
         public Form1()
         {
@@ -392,6 +444,152 @@ namespace remote_window
                 this.btnConnect?.Focus();
             }
             catch { }
+            // initialize About frame player state
+            aboutFrameIndex = 1;
+            aboutMissCount = 0;
+        }
+
+        private string FindFramesDirectory()
+        {
+            // Try to locate a folder named 'frames' or 'frame' starting from the app base directory
+            try
+            {
+                string[] candidates = new[] { "frames", "frame" };
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory ?? Application.StartupPath;
+
+                // check immediate
+                foreach (var c in candidates)
+                {
+                    var p = System.IO.Path.Combine(baseDir, c);
+                    if (System.IO.Directory.Exists(p)) return p;
+                }
+
+                // ascend folders up to reasonable depth (to support running from bin\Debug and repo layout)
+                string cur = baseDir;
+                for (int i = 0; i < 6; i++)
+                {
+                    cur = System.IO.Path.GetFullPath(System.IO.Path.Combine(cur, ".."));
+                    foreach (var c in candidates)
+                    {
+                        var p = System.IO.Path.Combine(cur, c);
+                        if (System.IO.Directory.Exists(p)) return p;
+                    }
+                }
+
+                // also try repo-specific path: looking for remote_window\frame under parents
+                cur = baseDir;
+                for (int i = 0; i < 6; i++)
+                {
+                    cur = System.IO.Path.GetFullPath(System.IO.Path.Combine(cur, ".."));
+                    var p = System.IO.Path.Combine(cur, "remote_window", "frame");
+                    if (System.IO.Directory.Exists(p)) return p;
+                }
+
+                return string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        // About player state
+        private int aboutFrameIndex = 1;
+        private int aboutMissCount = 0;
+        private const int AboutMissThreshold = 250;
+
+        private void tabAllSettings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                bool isAbout = false;
+                if (this.tabAllSettings.SelectedTab != null)
+                {
+                    var sel = this.tabAllSettings.SelectedTab;
+                    if (sel == this.About) isAbout = true;
+                    else if (!string.IsNullOrEmpty(sel.Text) && (sel.Text.Equals("About", StringComparison.OrdinalIgnoreCase) || sel.Text.Equals("關於"))) isAbout = true;
+                    else if (this.groupBox9 != null && sel.Controls.Contains(this.groupBox9)) isAbout = true;
+                }
+
+                if (isAbout)
+                {
+                    //try { this.AAAApple.Font = new Font("Consolas", 9F); } catch { }
+                    try { this.AAAApple.WordWrap = false; } catch { }
+                    try { if (!this.timer1.Enabled) this.timer1.Start(); } catch { }
+                }
+                else
+                {
+                    try { if (this.timer1.Enabled) this.timer1.Stop(); } catch { }
+                }
+            }
+            catch { }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            // Each tick: find next available frame and display it. Use nested loops per requirement.
+            string framesDir = FindFramesDirectory();
+            if (string.IsNullOrEmpty(framesDir) || !System.IO.Directory.Exists(framesDir))
+            {
+                // frames directory not found; nothing to play
+                return;
+            }
+
+            bool displayed = false;
+
+            // Outer loop caps attempts per tick to avoid infinite loops
+            for (int outer = 0; outer < 1000 && !displayed; outer++)
+            {
+                // Inner loop: try to find next available frame; break when one displayed
+                while (!displayed)
+                {
+                    string fileName = $"BA{aboutFrameIndex}.txt";
+                    string path = System.IO.Path.Combine(framesDir, fileName);
+                    try
+                    {
+                        if (System.IO.File.Exists(path))
+                        {
+                            string content = ReadTextFileAuto(path);
+                            this.AAAApple.Text = content;
+                            aboutFrameIndex++;
+                            aboutMissCount = 0;
+                            displayed = true;
+                            break; // found frame, exit inner loop
+                        }
+
+        
+                        else
+                        {
+                            // missing frame -> skip
+                            aboutFrameIndex++;
+                            aboutMissCount++;
+                            if (aboutMissCount >= AboutMissThreshold)
+                            {
+                                // considered end; reset to start
+                                aboutFrameIndex = 1;
+                                aboutMissCount = 0;
+                                // continue searching from start in same tick
+                                continue;
+                            }
+                            // continue inner while to try next index
+                            continue;
+                        }
+                    }
+                    catch
+                    {
+                        // treat as miss
+                        aboutFrameIndex++;
+                        aboutMissCount++;
+                        if (aboutMissCount >= AboutMissThreshold)
+                        {
+                            aboutFrameIndex = 1;
+                            aboutMissCount = 0;
+                            continue;
+                        }
+                        continue;
+                    }
+                }
+            }
         }
 
         private void listSavedPreset_SelectedIndexChanged(object sender, EventArgs e)
