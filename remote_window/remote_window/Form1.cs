@@ -201,7 +201,7 @@ namespace remote_window
         private string BuildRdpContent(bool includePassword)
         {
             string remoteAddress = this.textRemoteAddress?.Text ?? "";
-            string port = this.numRemotePort?.Value.ToString() ?? "3389";
+            int port = this.numRemotePort != null ? Decimal.ToInt32(this.numRemotePort.Value) : 3389;
             string username = this.comboUserAccount?.Text ?? "";
             string resolution = this.lblNowRes?.Text ?? "1920x1080";
             bool fullscreen = this.chkFullscreen?.Checked ?? true;
@@ -236,7 +236,8 @@ namespace remote_window
             string height = resParts.Length > 1 ? resParts[1] : "1080";
 
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine($"full address:s:{remoteAddress}:{port}");
+            sb.AppendLine($"full address:s:{remoteAddress}");
+            sb.AppendLine($"server port:i:{port}");
             sb.AppendLine($"username:s:{username}");
             sb.AppendLine($"screen mode id:i:{(fullscreen ? 2 : 1)}");
             sb.AppendLine($"use multimon:i:{(multiScreen ? 1 : 0)}");
