@@ -5,35 +5,27 @@ using System.Text;
 
 namespace remote_window
 {
-    public class RdpSettings
+    public static class RdpFileManager
     {
-        public string RemoteAddress { get; set; } = string.Empty;
-        public string Port { get; set; } = "3389";
-        public string Username { get; set; } = string.Empty;
-        public string Resolution { get; set; } = "1920x1080";
-        public bool Fullscreen { get; set; } = true;
-        public bool MultiScreen { get; set; } = false;
-        public string ColorDepth { get; set; } = "32";
-        public int AudioMode { get; set; } = 0;
-        public int AudioCaptureMode { get; set; } = 1;
-        public bool RedirectClipboard { get; set; } = true;
-        public bool RedirectPrinters { get; set; } = true;
-        public bool RedirectSmartcards { get; set; } = true;
-        public bool RedirectComports { get; set; } = false;
-        public bool RedirectDrives { get; set; } = false;
-        public string Password { get; set; } = string.Empty;
-    }
-
-    public class RdpFileManager
-    {
-        private readonly Func<string, string> buildPasswordBlob;
-
-        public RdpFileManager(Func<string, string> buildPasswordBlob)
+        public class RdpSettings
         {
-            this.buildPasswordBlob = buildPasswordBlob ?? (_ => string.Empty);
+            public string RemoteAddress { get; set; } = string.Empty;
+            public string Port { get; set; } = "3389";
+            public string Username { get; set; } = string.Empty;
+            public string Resolution { get; set; } = "1920x1080";
+            public bool Fullscreen { get; set; } = true;
+            public bool MultiScreen { get; set; } = false;
+            public string ColorDepth { get; set; } = "32";
+            public int AudioMode { get; set; } = 0;
+            public int AudioCaptureMode { get; set; } = 1;
+            public bool RedirectClipboard { get; set; } = true;
+            public bool RedirectPrinters { get; set; } = true;
+            public bool RedirectSmartcards { get; set; } = true;
+            public bool RedirectComports { get; set; } = false;
+            public bool RedirectDrives { get; set; } = false;
+            public string Password { get; set; } = string.Empty;
         }
-
-        public string BuildRdpFileContent(RdpSettings settings, bool includePassword)
+        public static string BuildRdpFileContent(RdpSettings settings, bool includePassword, Func<string, string> buildPasswordBlob = null)
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
 
@@ -69,7 +61,8 @@ namespace remote_window
 
             if (includePassword && !string.IsNullOrEmpty(settings.Password))
             {
-                string blob = buildPasswordBlob(settings.Password);
+                var blobBuilder = buildPasswordBlob ?? (_ => string.Empty);
+                string blob = blobBuilder(settings.Password);
                 if (!string.IsNullOrEmpty(blob))
                 {
                     lines.Add($"password 51:b:{blob}");
@@ -79,14 +72,14 @@ namespace remote_window
             return string.Join("\r\n", lines) + "\r\n";
         }
 
-        public void SaveRdpFile(string filePath, RdpSettings settings, bool includePassword)
+        public static void SaveRdpFile(string filePath, RdpSettings settings, bool includePassword, Func<string, string> buildPasswordBlob = null)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("檔案路徑不可為空白。", nameof(filePath));
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
-            string content = BuildRdpFileContent(settings, includePassword);
+            string content = BuildRdpFileContent(settings, includePassword, buildPasswordBlob);
             string dir = Path.GetDirectoryName(filePath);
             if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
             {
@@ -100,7 +93,7 @@ namespace remote_window
             }
         }
 
-        public bool ValidateRdpFile(string filePath, string portFallback)
+        public static bool ValidateRdpFile(string filePath, string portFallback)
         {
             try
             {
@@ -125,7 +118,7 @@ namespace remote_window
             }
         }
 
-        private string BuildFullAddress(string remoteAddress, string port)
+        private static string BuildFullAddress(string remoteAddress, string port)
         {
             string address = (remoteAddress ?? string.Empty).Trim();
             string portText = (port ?? "3389").Trim();

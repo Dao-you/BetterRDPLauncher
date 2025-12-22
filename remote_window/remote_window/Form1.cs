@@ -16,7 +16,6 @@ namespace remote_window
     public partial class Form1 : Form
     {
         
-        private readonly RdpFileManager rdpFileManager;
         private string rdpDir;
         private Dictionary<string, string> rdpFileMap = new Dictionary<string, string>();
         private const string DefaultListEntry = "新增的連線...";
@@ -74,7 +73,6 @@ namespace remote_window
         public Form1()
         {
             InitializeComponent();
-            this.rdpFileManager = new RdpFileManager(BuildPasswordBlob);
             this.Load += Form1_Load;
             this.listSavedPreset.SelectedIndexChanged += listSavedPreset_SelectedIndexChanged;
         }
@@ -178,9 +176,9 @@ namespace remote_window
             }
         }
 
-        private RdpSettings CollectRdpSettings()
+        private RdpFileManager.RdpSettings CollectRdpSettings()
         {
-            var settings = new RdpSettings();
+            var settings = new RdpFileManager.RdpSettings();
 
             settings.RemoteAddress = this.textRemoteAddress?.Text ?? string.Empty;
             settings.Port = this.numRemotePort?.Value.ToString() ?? "3389";
@@ -230,7 +228,7 @@ namespace remote_window
         private void SaveRdpFile(string filePath, bool includePassword)
         {
             var settings = CollectRdpSettings();
-            rdpFileManager.SaveRdpFile(filePath, settings, includePassword);
+            RdpFileManager.SaveRdpFile(filePath, settings, includePassword, BuildPasswordBlob);
         }
 
         private string DecodePasswordFromBlob(string hexBlob)
