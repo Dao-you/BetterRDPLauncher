@@ -25,7 +25,69 @@ namespace remote_window
             public bool RedirectDrives { get; set; } = false;
             public string Password { get; set; } = string.Empty;
         }
-        public static string BuildRdpFileContent(RdpSettings settings, bool includePassword, Func<string, string> buildPasswordBlob = null)
+
+        // DPAPI P/Invoke wrappers to avoid dependency issues with ProtectedData in some build setups
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct DATA_BLOB
+        {
+            public int cbData;
+            public IntPtr pbData;
+        }
+
+        [System.Runtime.InteropServices.DllImport("crypt32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        private static extern bool CryptProtectData(ref DATA_BLOB pDataIn, string szDataDescr, IntPtr pOptionalEntropy, IntPtr pvReserved, IntPtr pPromptStruct, int dwFlags, out DATA_BLOB pDataOut);
+
+        [System.Runtime.InteropServices.DllImport("crypt32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        private static extern bool CryptUnprotectData(ref DATA_BLOB pDataIn, StringBuilder ppszDataDescr, IntPtr pOptionalEntropy, IntPtr pvReserved, IntPtr pPromptStruct, int dwFlags, out DATA_BLOB pDataOut);
+
+        private static byte[] DpapiProtect(byte[] plain)
+        {
+            var inBlob = new DATA_BLOB();
+            inBlob.cbData = plain.Length;
+            inBlob.pbData = System.Runtime.InteropServices.Marshal.AllocHGlobal(plain.Length);
+            try
+            {
+                System.Runtime.InteropServices.Marshal.Copy(plain, 0, inBlob.pbData, plain.Length);
+                DATA_BLOB outBlob;
+                const int CRYPTPROTECT_UI_FORBIDDEN = 0x1;
+                bool ok = CryptProtectData(ref inBlob, null, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, CRYPTPROTECT_UI_FORBIDDEN, out outBlob);
+                if (!ok) throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+                byte[] encrypted = new byte[outBlob.cbData];
+                System.Runtime.InteropServices.Marshal.Copy(outBlob.pbData, encrypted, 0, outBlob.cbData);
+                // free outBlob.pbData allocated by API
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(outBlob.pbData);
+                return encrypted;
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(inBlob.pbData);
+            }
+        }
+
+        private static byte[] DpapiUnprotect(byte[] encrypted)
+        {
+            var inBlob = new DATA_BLOB();
+            inBlob.cbData = encrypted.Length;
+            inBlob.pbData = System.Runtime.InteropServices.Marshal.AllocHGlobal(encrypted.Length);
+            try
+            {
+                System.Runtime.InteropServices.Marshal.Copy(encrypted, 0, inBlob.pbData, encrypted.Length);
+                DATA_BLOB outBlob;
+                StringBuilder desc = new StringBuilder();
+                const int CRYPTPROTECT_UI_FORBIDDEN = 0x1;
+                bool ok = CryptUnprotectData(ref inBlob, desc, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, CRYPTPROTECT_UI_FORBIDDEN, out outBlob);
+                if (!ok) throw new System.ComponentModel.Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+                byte[] plain = new byte[outBlob.cbData];
+                System.Runtime.InteropServices.Marshal.Copy(outBlob.pbData, plain, 0, outBlob.cbData);
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(outBlob.pbData);
+                return plain;
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(inBlob.pbData);
+            }
+        }
+        public static string BuildRdpFileContent(RdpSettings settings, bool includePassword)
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
 
@@ -61,8 +123,7 @@ namespace remote_window
 
             if (includePassword && !string.IsNullOrEmpty(settings.Password))
             {
-                var blobBuilder = buildPasswordBlob ?? (_ => string.Empty);
-                string blob = blobBuilder(settings.Password);
+                string blob = BuildPasswordBlob(settings.Password);
                 if (!string.IsNullOrEmpty(blob))
                 {
                     lines.Add($"password 51:b:{blob}");
@@ -72,14 +133,14 @@ namespace remote_window
             return string.Join("\r\n", lines) + "\r\n";
         }
 
-        public static void SaveRdpFile(string filePath, RdpSettings settings, bool includePassword, Func<string, string> buildPasswordBlob = null)
+        public static void SaveRdpFile(string filePath, RdpSettings settings, bool includePassword)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("檔案路徑不可為空白。", nameof(filePath));
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
-            string content = BuildRdpFileContent(settings, includePassword, buildPasswordBlob);
+            string content = BuildRdpFileContent(settings, includePassword);
             string dir = Path.GetDirectoryName(filePath);
             if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
             {
@@ -115,6 +176,78 @@ namespace remote_window
             catch
             {
                 return false;
+            }
+        }
+
+        private static string BuildPasswordBlob(string password)
+        {
+            // Build DPAPI-encrypted blob and return as HEX (uppercase) string
+            // MSTSC expects DPAPI encrypted bytes represented as hex for "password 51:b:".
+            if (string.IsNullOrEmpty(password)) return string.Empty;
+            byte[] pwBytes = Encoding.Unicode.GetBytes(password);
+            byte[] enc = DpapiProtect(pwBytes);
+            var sb = new StringBuilder(enc.Length * 2);
+            foreach (byte b in enc)
+            {
+                sb.Append(b.ToString("X2"));
+            }
+            return sb.ToString();
+        }
+
+        public static string DecodePasswordFromBlob(string hexBlob)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(hexBlob)) return string.Empty;
+
+                // First, if looks like hex, try DPAPI unprotect (the intended format)
+                if (hexBlob.Length % 2 == 0)
+                {
+                    bool isHex = true;
+                    for (int i = 0; i < hexBlob.Length; i++)
+                    {
+                        char c = hexBlob[i];
+                        if (!Uri.IsHexDigit(c)) { isHex = false; break; }
+                    }
+                    if (isHex)
+                    {
+                        int len = hexBlob.Length / 2;
+                        byte[] data = new byte[len];
+                        for (int i = 0; i < len; i++)
+                        {
+                            data[i] = Convert.ToByte(hexBlob.Substring(i * 2, 2), 16);
+                        }
+                        try
+                        {
+                            var decrypted = DpapiUnprotect(data);
+                            return Encoding.Unicode.GetString(decrypted);
+                        }
+                        catch
+                        {
+                            // If DPAPI unprotect fails, fall through to other fallbacks
+                        }
+                        // If DPAPI failed, as a last resort try interpreting hex as raw unicode bytes
+                        try
+                        {
+                            return Encoding.Unicode.GetString(data);
+                        }
+                        catch { }
+                    }
+                }
+
+                // Next, try base64 (legacy cases where base64 was stored)
+                try
+                {
+                    var bytes = Convert.FromBase64String(hexBlob);
+                    return Encoding.Unicode.GetString(bytes);
+                }
+                catch { }
+
+                return string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
             }
         }
 
