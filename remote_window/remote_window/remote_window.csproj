@@ -92,6 +92,9 @@
   <ItemGroup>
     <Content Include="Images\visibility.png" />
     <Content Include="Images\visibility_off.png" />
+    <Content Include="LICENSE_INFO.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

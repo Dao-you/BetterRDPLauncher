@@ -110,6 +110,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnSaveNew = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.buttonShowLicense = new System.Windows.Forms.Button();
             this.tabAllSettings.SuspendLayout();
             this.tabBasic.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -772,6 +773,7 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.buttonShowLicense);
             this.groupBox8.Controls.Add(this.label8);
             this.groupBox8.Location = new System.Drawing.Point(3, 103);
             this.groupBox8.Name = "groupBox8";
@@ -785,9 +787,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(6, 21);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(106, 144);
+            this.label8.Size = new System.Drawing.Size(120, 180);
             this.label8.TabIndex = 0;
-            this.label8.Text = "孫培鈞\r\n儲存與連線程式\r\n\r\n張丞亞\r\n123\r\n\r\n黄靖渝\r\n456";
+            this.label8.Text = "孫培鈞\r\n儲存與連線程式\r\n\r\n張丞亞\r\n使用者介面設計\r\n應用程式說明簡報\r\n\r\n黄靖渝\r\n使用者介面設計\r\n應用程式說明簡報";
             // 
             // groupBox4
             // 
@@ -919,6 +921,16 @@
             this.timer1.Interval = 30;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // buttonShowLicense
+            // 
+            this.buttonShowLicense.Location = new System.Drawing.Point(6, 256);
+            this.buttonShowLicense.Name = "buttonShowLicense";
+            this.buttonShowLicense.Size = new System.Drawing.Size(137, 23);
+            this.buttonShowLicense.TabIndex = 1;
+            this.buttonShowLicense.Text = "開放原始碼授權...";
+            this.buttonShowLicense.UseVisualStyleBackColor = true;
+            this.buttonShowLicense.Click += new System.EventHandler(this.buttonShowLicense_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnConnect;
@@ -1043,6 +1055,7 @@
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.RichTextBox AAAApple;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button buttonShowLicense;
         // AAAApple and timer1 already declared earlier in designer generated region
     }
 }

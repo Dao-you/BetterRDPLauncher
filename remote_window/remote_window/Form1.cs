@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -269,6 +270,15 @@ namespace remote_window
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+
+            // This part uses code from the "bad-apple" project.
+            // The "bad-apple" project is licensed under the GPL-3.0 License.
+            // Source: https://github.com/simotmm/bad-apple
+            //
+            // The code from "bad-apple" is used here in compliance with the terms of the GPL-3.0 License.
+            // You may modify, distribute, and use the code according to the terms outlined in the GPL-3.0 License.
+            // For more details, please refer to the LICENSE file in this repository and the original "bad-apple" repository.
+
             // Each tick: find next available frame and display it. Use nested loops per requirement.
             string framesDir = FindFramesDirectory();
             if (string.IsNullOrEmpty(framesDir) || !System.IO.Directory.Exists(framesDir))
@@ -745,6 +755,23 @@ namespace remote_window
                 FileName = "https://github.com/Dao-you/BetterRDPLauncher",
                 UseShellExecute = true
             });
+        }
+
+        private void buttonShowLicense_Click(object sender, EventArgs e)
+        {
+            // 讀取 LICENSE.txt 文件內容
+            string licenseFilePath = Path.Combine(Application.StartupPath, "LICENSE_INFO.txt");
+
+            if (File.Exists(licenseFilePath))
+            {
+                // 讀取授權資訊並顯示在 MessageBox 中
+                string licenseContent = File.ReadAllText(licenseFilePath, Encoding.UTF8);
+                MessageBox.Show(licenseContent, "開放原始碼授權", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("授權文件未找到。", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

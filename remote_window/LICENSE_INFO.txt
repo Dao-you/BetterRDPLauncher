@@ -1,0 +1,7 @@
+本專案使用了 "bad-apple" 專案的程式碼。
+"bad-apple" 專案採用 GPL-3.0 授權。
+來源：https://github.com/simotmm/bad-apple
+
+本程式碼依照 GPL-3.0 授權條款使用 "bad-apple" 專案的程式碼。
+您可以根據 GPL-3.0 授權條款修改、分發及使用此程式碼。
+如需更多資訊，請參閱本專案的 LICENSE 檔案以及原始 "bad-apple" 專案的授權條款。

@@ -59,3 +59,11 @@ flowchart TD
 - 已使用巢狀迴圈與 break/continue 於 Bad Apple 播放邏輯，滿足迴圈與流程控制條件。
 - 使用多個 `SaveRdpFile` 等方法封裝行為，亦有 `else if` 判斷解析 `.rdp` 內容，符合 Function 與 else if 條件。
 - 創意/美觀/完整度：具備彩蛋式動畫、DPAPI 加密與預設管理，並使用系統圖示與圖片提升介面識別度。
+
+## 開源授權
+
+本專案使用了以下開放原始碼專案：
+
+- **bad-apple** (https://github.com/simotmm/bad-apple) - 採用 GPL-3.0 授權。
+
+請參見相應的專案授權條款了解更多資訊。

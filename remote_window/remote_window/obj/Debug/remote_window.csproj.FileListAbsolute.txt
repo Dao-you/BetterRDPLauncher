@@ -23,3 +23,4 @@ C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug
 C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug\remote_window.exe
 C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug\remote_window.pdb
 C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\obj\Debug\remote_window.SaveRdpDialog.resources
+C:\Users\qaz93\Documents\BetterRDPLauncher\remote_window\remote_window\bin\Debug\LICENSE_INFO.txt
