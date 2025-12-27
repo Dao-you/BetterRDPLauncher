@@ -288,7 +288,7 @@ namespace remote_window
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void RefreshPresetList()
         {
             // 掃描 ~/RDP/*.rdp 並顯示於 listSavedPreset
             rdpDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "RDP");
@@ -309,6 +309,11 @@ namespace remote_window
             }
             // select default
             listSavedPreset.SelectedIndex = 0;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            RefreshPresetList();
 
             // Ensure connect button gets initial focus so Enter activates it
             try
@@ -765,6 +770,7 @@ namespace remote_window
                     }
 
                     MessageBox.Show($"RDP 設定已儲存至: {filePath}", "儲存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefreshPresetList();
                 }
             }
             catch (Exception ex)
@@ -793,6 +799,7 @@ namespace remote_window
 
                 SaveRdpFile(filePath, includePassword: true);
                 MessageBox.Show($"已將變更儲存至: {filePath}", "儲存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RefreshPresetList();
             }
             catch (Exception ex)
             {
@@ -821,11 +828,8 @@ namespace remote_window
                 bool ok = MoveToRecycleBin(filePath);
                 if (!ok) throw new Exception("無法移動至資源回收筒。請確認檔案權限。");
 
-                // Remove from list and map
-                rdpFileMap.Remove(name);
-                listSavedPreset.Items.Remove(name);
-
                 MessageBox.Show($"已將檔案移至資源回收筒: {filePath}", "刪除成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RefreshPresetList();
             }
             catch (Exception ex)
             {
