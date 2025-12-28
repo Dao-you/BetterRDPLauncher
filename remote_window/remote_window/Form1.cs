@@ -21,6 +21,11 @@ namespace remote_window
         private Dictionary<string, string> savedAccountPasswords = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private const string DefaultListEntry = "新增的連線...";
 
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
         private string ReadTextFileAuto(string path)
         {
             // Read first bytes to detect BOM for UTF-8/UTF-16LE/UTF-16BE. If no BOM, assume UTF-8.
@@ -70,13 +75,6 @@ namespace remote_window
             {
                 try { return System.IO.File.ReadAllText(path, Encoding.Default); } catch { return string.Empty; }
             }
-        }
-        public Form1()
-        {
-            InitializeComponent();
-            this.Load += Form1_Load;
-            this.listSavedPreset.SelectedIndexChanged += listSavedPreset_SelectedIndexChanged;
-            this.comboUserAccount.SelectedIndexChanged += comboUserAccount_SelectedIndexChanged;
         }
 
         // Move file to recycle bin using SHFileOperation
