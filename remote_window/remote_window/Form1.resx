@@ -117,6 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AAAApple.Text" xml:space="preserve">
+    <value>                                                                               
+                                                                               
+                                                                               
+                                                                               
+"       i                                                                      
+                                               !                               
+                      :                                                        
+                                                                      "        
+                                                                               
+                     ________________________________                          
+                    /  _   _ _______ _    _ _______  \                         
+                    | | \ | |__   __| |  | |__   __| |                         
+                    | |  \| |  | |  | |  | |  | |    |                         
+                    | | . ` |  | |  | |  | |  | |    |                         
+                    | | |\  |  | |  | |__| |  | |    |                         
+                    | |_| \_|  |_|   \____/   |_|    |                         
+         '          |                                |                       : 
+                    \                                /       '                 
+                    --------------------------------                           
+                            \   ^__^           !     !                         
+           "                \  (oo)\_______                                    
+                                (__)\       )\/\                               
+                      :      :      ||----w |                                  
+                                    ||     ||                                  
+              台北風光正，北科學子強， 科技創新樂，大道至真良。                     
+                                                                               
+                       :    !    "                            !                
+ i  !                                                                         :
+                                                                               
+                                                                               
+                                                                   :           </value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="pictureBox7.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -10613,39 +10646,6 @@
         tNBCCy200EILLbTQQgsttNBCCy200EILLbTQQgsttNBCCy200EILLbTQQgsttNBCCy200EILLf6r8f8A
         uFwjsy8palEAAAAASUVORK5CYII=
 </value>
-  </data>
-  <data name="AAAApple.Text" xml:space="preserve">
-    <value>                                                                               
-                                                                               
-                                                                               
-                                                                               
-"       i                                                                      
-                                               !                               
-                      :                                                        
-                                                                      "        
-                                                                               
-                     ________________________________                          
-                    /  _   _ _______ _    _ _______  \                         
-                    | | \ | |__   __| |  | |__   __| |                         
-                    | |  \| |  | |  | |  | |  | |    |                         
-                    | | . ` |  | |  | |  | |  | |    |                         
-                    | | |\  |  | |  | |__| |  | |    |                         
-                    | |_| \_|  |_|   \____/   |_|    |                         
-         '          |                                |                       : 
-                    \                                /       '                 
-                    --------------------------------                           
-                            \   ^__^           !     !                         
-           "                \  (oo)\_______                                    
-                                (__)\       )\/\                               
-                      :      :      ||----w |                                  
-                                    ||     ||                                  
-              台北風光正，北科學子強， 科技創新樂，大道至真良。                     
-                                                                               
-                       :    !    "                            !                
- i  !                                                                         :
-                                                                               
-                                                                               
-                                                                   :           </value>
   </data>
   <data name="pictureBox4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

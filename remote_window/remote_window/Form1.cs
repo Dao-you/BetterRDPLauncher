@@ -18,7 +18,13 @@ namespace remote_window
         
         private string rdpDir;
         private Dictionary<string, string> rdpFileMap = new Dictionary<string, string>();
+        private Dictionary<string, string> savedAccountPasswords = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private const string DefaultListEntry = "新增的連線...";
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
 
         private string ReadTextFileAuto(string path)
         {
@@ -69,12 +75,6 @@ namespace remote_window
             {
                 try { return System.IO.File.ReadAllText(path, Encoding.Default); } catch { return string.Empty; }
             }
-        }
-        public Form1()
-        {
-            InitializeComponent();
-            this.Load += Form1_Load;
-            this.listSavedPreset.SelectedIndexChanged += listSavedPreset_SelectedIndexChanged;
         }
 
         // Move file to recycle bin using SHFileOperation
@@ -160,6 +160,10 @@ namespace remote_window
             rdpDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "RDP");
             listSavedPreset.Items.Clear();
             rdpFileMap.Clear();
+            comboUserAccount.Items.Clear();
+            savedAccountPasswords.Clear();
+
+            var collectedUsers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             // Always have default first entry for creating a new connection
             listSavedPreset.Items.Add(DefaultListEntry);
@@ -171,10 +175,57 @@ namespace remote_window
                     string name = System.IO.Path.GetFileNameWithoutExtension(file);
                     listSavedPreset.Items.Add(name);
                     rdpFileMap[name] = file;
+
+                    try
+                    {
+                        var lines = System.IO.File.ReadAllLines(file, System.Text.Encoding.Unicode);
+                        string username = string.Empty;
+                        string password = string.Empty;
+                        foreach (var line in lines)
+                        {
+                            if (line.StartsWith("username:s:", StringComparison.OrdinalIgnoreCase))
+                            {
+                                username = line.Substring("username:s:".Length);
+                            }
+                            else if (line.StartsWith("password 51:b:", StringComparison.OrdinalIgnoreCase))
+                            {
+                                var blob = line.Substring("password 51:b:".Length);
+                                password = RdpFileManager.DecodePasswordFromBlob(blob);
+                            }
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(username) && collectedUsers.Add(username))
+                        {
+                            comboUserAccount.Items.Add(username);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(username))
+                        {
+                            if (!savedAccountPasswords.ContainsKey(username) || (!string.IsNullOrEmpty(password) && string.IsNullOrEmpty(savedAccountPasswords[username])))
+                            {
+                                savedAccountPasswords[username] = password;
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // Ignore malformed RDP files while populating presets and accounts
+                    }
                 }
             }
             // select default
             listSavedPreset.SelectedIndex = 0;
+        }
+
+        private void comboUserAccount_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboUserAccount.SelectedItem is string username)
+            {
+                if (savedAccountPasswords.TryGetValue(username, out var password))
+                {
+                    this.textPassword.Text = password;
+                }
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
