@@ -164,6 +164,7 @@ namespace remote_window
             savedAccountPasswords.Clear();
 
             var collectedUsers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var collectedUserList = new List<string>();
 
             // Always have default first entry for creating a new connection
             listSavedPreset.Items.Add(DefaultListEntry);
@@ -196,7 +197,7 @@ namespace remote_window
 
                         if (!string.IsNullOrWhiteSpace(username) && collectedUsers.Add(username))
                         {
-                            comboUserAccount.Items.Add(username);
+                            collectedUserList.Add(username);
                         }
 
                         if (!string.IsNullOrWhiteSpace(username))
@@ -214,7 +215,33 @@ namespace remote_window
                 }
             }
             // select default
+            RefreshComboUserAccount(collectedUserList);
             listSavedPreset.SelectedIndex = 0;
+        }
+
+        private void RefreshComboUserAccount(List<string> users)
+        {
+            comboUserAccount.Items.Clear();
+            if (users == null || users.Count == 0) return;
+
+            // Bubble sort with nested loops (case-insensitive)
+            for (int i = 0; i < users.Count - 1; i++)
+            {
+                for (int j = 0; j < users.Count - 1 - i; j++)
+                {
+                    if (string.Compare(users[j], users[j + 1], StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        string tmp = users[j];
+                        users[j] = users[j + 1];
+                        users[j + 1] = tmp;
+                    }
+                }
+            }
+
+            foreach (var user in users)
+            {
+                comboUserAccount.Items.Add(user);
+            }
         }
 
         private void comboUserAccount_SelectedIndexChanged(object sender, EventArgs e)
@@ -226,21 +253,6 @@ namespace remote_window
                     this.textPassword.Text = password;
                 }
             }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            RefreshPresetList();
-
-            // Ensure connect button gets initial focus so Enter activates it
-            try
-            {
-                this.btnConnect?.Focus();
-            }
-            catch { }
-            // initialize About frame player state
-            aboutFrameIndex = 1;
-            aboutMissCount = 0;
         }
 
         private string FindFramesDirectory()
@@ -291,7 +303,20 @@ namespace remote_window
         private int aboutFrameIndex = 1;
         private int aboutMissCount = 0;
         private const int AboutMissThreshold = 250;
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            RefreshPresetList();
 
+            // Ensure connect button gets initial focus so Enter activates it
+            try
+            {
+                this.btnConnect?.Focus();
+            }
+            catch { }
+            // initialize About frame player state
+            aboutFrameIndex = 1;
+            aboutMissCount = 0;
+        }
         private void tabAllSettings_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
