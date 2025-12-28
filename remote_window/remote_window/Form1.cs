@@ -824,5 +824,10 @@ namespace remote_window
                 MessageBox.Show("授權文件未找到。", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnUpdateTreeSavedList_Click(object sender, EventArgs e)
+        {
+            RefreshPresetList();
+        }
     }
 }

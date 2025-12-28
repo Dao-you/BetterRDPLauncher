@@ -29,22 +29,22 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("剪貼簿");
-            System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("印表機");
-            System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("智慧卡或 Windows Hello 企業版");
-            System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("WebAuthn(Windows Hello 或安全性金鑰)");
-            System.Windows.Forms.TreeNode treeNode41 = new System.Windows.Forms.TreeNode("連接埠");
-            System.Windows.Forms.TreeNode treeNode42 = new System.Windows.Forms.TreeNode("位置");
-            System.Windows.Forms.TreeNode treeNode43 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
-            System.Windows.Forms.TreeNode treeNode44 = new System.Windows.Forms.TreeNode("視訊擷取裝置", new System.Windows.Forms.TreeNode[] {
-            treeNode43});
-            System.Windows.Forms.TreeNode treeNode45 = new System.Windows.Forms.TreeNode("稍後插入的磁碟機");
-            System.Windows.Forms.TreeNode treeNode46 = new System.Windows.Forms.TreeNode("磁碟機", new System.Windows.Forms.TreeNode[] {
-            treeNode45});
-            System.Windows.Forms.TreeNode treeNode47 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
-            System.Windows.Forms.TreeNode treeNode48 = new System.Windows.Forms.TreeNode("其他支援即插即用 (PnP) 的裝置", new System.Windows.Forms.TreeNode[] {
-            treeNode47});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("剪貼簿");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("印表機");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("智慧卡或 Windows Hello 企業版");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("WebAuthn(Windows Hello 或安全性金鑰)");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("連接埠");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("位置");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("視訊擷取裝置", new System.Windows.Forms.TreeNode[] {
+            treeNode7});
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("稍後插入的磁碟機");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("磁碟機", new System.Windows.Forms.TreeNode[] {
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("稍後插入的裝置");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("其他支援即插即用 (PnP) 的裝置", new System.Windows.Forms.TreeNode[] {
+            treeNode11});
             this.tabAllSettings = new System.Windows.Forms.TabControl();
             this.tabBasic = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -111,6 +111,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnSaveNew = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnUpdateTreeSavedList = new System.Windows.Forms.Button();
             this.tabAllSettings.SuspendLayout();
             this.tabBasic.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -626,44 +627,44 @@
             this.treeDeviceList.Location = new System.Drawing.Point(165, 51);
             this.treeDeviceList.Margin = new System.Windows.Forms.Padding(2);
             this.treeDeviceList.Name = "treeDeviceList";
-            treeNode37.Checked = true;
-            treeNode37.Name = "Clipboard";
-            treeNode37.Text = "剪貼簿";
-            treeNode38.Checked = true;
-            treeNode38.Name = "Printer";
-            treeNode38.Text = "印表機";
-            treeNode39.Checked = true;
-            treeNode39.Name = "SmartCard";
-            treeNode39.Text = "智慧卡或 Windows Hello 企業版";
-            treeNode40.Checked = true;
-            treeNode40.Name = "WebAuth";
-            treeNode40.Text = "WebAuthn(Windows Hello 或安全性金鑰)";
-            treeNode41.Name = "Ports";
-            treeNode41.Text = "連接埠";
-            treeNode42.Name = "Location";
-            treeNode42.Text = "位置";
-            treeNode43.Name = "Vid_later";
-            treeNode43.Text = "稍後插入的裝置";
-            treeNode44.Name = "VideoCapture";
-            treeNode44.Text = "視訊擷取裝置";
-            treeNode45.Name = "Drive_later";
-            treeNode45.Text = "稍後插入的磁碟機";
-            treeNode46.Name = "Drive";
-            treeNode46.Text = "磁碟機";
-            treeNode47.Name = "PnP_later";
-            treeNode47.Text = "稍後插入的裝置";
-            treeNode48.Name = "PnP";
-            treeNode48.Text = "其他支援即插即用 (PnP) 的裝置";
+            treeNode1.Checked = true;
+            treeNode1.Name = "Clipboard";
+            treeNode1.Text = "剪貼簿";
+            treeNode2.Checked = true;
+            treeNode2.Name = "Printer";
+            treeNode2.Text = "印表機";
+            treeNode3.Checked = true;
+            treeNode3.Name = "SmartCard";
+            treeNode3.Text = "智慧卡或 Windows Hello 企業版";
+            treeNode4.Checked = true;
+            treeNode4.Name = "WebAuth";
+            treeNode4.Text = "WebAuthn(Windows Hello 或安全性金鑰)";
+            treeNode5.Name = "Ports";
+            treeNode5.Text = "連接埠";
+            treeNode6.Name = "Location";
+            treeNode6.Text = "位置";
+            treeNode7.Name = "Vid_later";
+            treeNode7.Text = "稍後插入的裝置";
+            treeNode8.Name = "VideoCapture";
+            treeNode8.Text = "視訊擷取裝置";
+            treeNode9.Name = "Drive_later";
+            treeNode9.Text = "稍後插入的磁碟機";
+            treeNode10.Name = "Drive";
+            treeNode10.Text = "磁碟機";
+            treeNode11.Name = "PnP_later";
+            treeNode11.Text = "稍後插入的裝置";
+            treeNode12.Name = "PnP";
+            treeNode12.Text = "其他支援即插即用 (PnP) 的裝置";
             this.treeDeviceList.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode37,
-            treeNode38,
-            treeNode39,
-            treeNode40,
-            treeNode41,
-            treeNode42,
-            treeNode44,
-            treeNode46,
-            treeNode48});
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4,
+            treeNode5,
+            treeNode6,
+            treeNode8,
+            treeNode10,
+            treeNode12});
             this.treeDeviceList.Size = new System.Drawing.Size(367, 125);
             this.treeDeviceList.TabIndex = 5;
             // 
@@ -934,6 +935,17 @@
             this.timer1.Interval = 30;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnUpdateTreeSavedList
+            // 
+            this.btnUpdateTreeSavedList.Font = new System.Drawing.Font("微軟正黑體", 9F);
+            this.btnUpdateTreeSavedList.Location = new System.Drawing.Point(129, 12);
+            this.btnUpdateTreeSavedList.Name = "btnUpdateTreeSavedList";
+            this.btnUpdateTreeSavedList.Size = new System.Drawing.Size(43, 23);
+            this.btnUpdateTreeSavedList.TabIndex = 100;
+            this.btnUpdateTreeSavedList.Text = "更新";
+            this.btnUpdateTreeSavedList.UseVisualStyleBackColor = true;
+            this.btnUpdateTreeSavedList.Click += new System.EventHandler(this.btnUpdateTreeSavedList_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnConnect;
@@ -941,6 +953,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuBar;
             this.ClientSize = new System.Drawing.Size(742, 479);
+            this.Controls.Add(this.btnUpdateTreeSavedList);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.listSavedPreset);
             this.Controls.Add(this.tabAllSettings);
@@ -1060,6 +1073,7 @@
         private System.Windows.Forms.RichTextBox AAAApple;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button buttonShowLicense;
+        private System.Windows.Forms.Button btnUpdateTreeSavedList;
         // AAAApple and timer1 already declared earlier in designer generated region
     }
 }
